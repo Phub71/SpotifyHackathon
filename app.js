@@ -44,6 +44,41 @@ spotifyApi.clientCredentialsGrant()
 //------------------------- API CALLS -------------------------//
 //-------------------------------------------------------------//
 
+app.get ('/addSong', async function (request, response){
+  const body = JSON.parse(request.body);
+  var user_id = await spotifyApi.getUser('jy0brm5nucctbr6sp5v2mjc64');
+  var track_id = await spotifyApi.getTrack('3kpYJjvM8Ja6btr5hEJLWc');
+  let addSong = await db.addSong(body.user_id, body.track_id);
+  response.send(addSong);
+});
+
+app.get ('/removeSong', async function (request, response){
+    var user_id = await spotifyApi.getUser('jy0brm5nucctbr6sp5v2mjc64');
+    var track_id = await spotifyApi.getTrack('3kpYJjvM8Ja6btr5hEJLWc');
+    let removeSong = await db.removeSong(user_id, track_id);
+    response.send(removeSong);
+});
+
+app.get ('reactHappy', async function (){
+    var user_id = await spotifyApi.getUser('jy0brm5nucctbr6sp5v2mjc64');
+    var track_id = await spotifyApi.getTrack('3kpYJjvM8Ja6btr5hEJLWc');
+    let reactHappy = await db.reactHappy(user_id,track_id);
+    response.send(reactHappy);
+});
+
+app.get ('reactSad', async function (){
+    var user_id = await spotifyApi.getUser('jy0brm5nucctbr6sp5v2mjc64');
+    var track_id = await spotifyApi.getTrack('3kpYJjvM8Ja6btr5hEJLWc');
+    let reactSad = await db.reactSad(user_id,track_id);
+    response.send(reactSad);
+});
+
+app.get ('/listSongs', async function (request, response){
+  let listSongs = await db.listSongs();
+  spotifyApi.getTracks(listSongs.map(song => song.track_id));
+  response.send(listSongs);
+});
+
 
 app.get('/search-track', function (request, response) {
 
