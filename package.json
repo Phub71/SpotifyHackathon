@@ -6,6 +6,11 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "angular": "^1.7.5",
+    "angular-animate": "^1.7.5",
+    "angular-aria": "^1.7.5",
+    "angular-material": "^1.1.10",
+    "angular-messages": "^1.7.5",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "dotenv": "^6.1.0",

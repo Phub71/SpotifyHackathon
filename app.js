@@ -7,6 +7,7 @@ const app = express();
 
 // http://expressjs.com/en/starter/static-files.html
 app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 app.use('/', express.static(path.join(__dirname, 'views'),{index:false,extensions:['html']}));
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
@@ -139,10 +140,10 @@ app.get('/artist', function (request, response) {
     });
 });
 
-app.get('/artist-top-tracks', function (request, response) {
+app.get('/tracks', function (request, response) {
 
   // Get an artist's top tracks in a country
-  spotifyApi.getArtistTopTracks('5Wfz1wnIoo4xSsP1KQ7Gr1', 'US')
+  spotifyApi.getTracks(['7ouMYWpwJ422jRcDASZB7P', '4VqPOruhp5EdPBeR92t6lQ', '2takcwOaAZWiXQijPHIx7B'])
     .then(function(data) {
 
       // Send the list of tracks
