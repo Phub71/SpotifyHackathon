@@ -21,13 +21,13 @@
     <script src="/node_modules/angular-aria/angular-aria.min.js"></script>
     <script src="/node_modules/angular-messages/angular-messages.min.js"></script>
     <script src="/node_modules/angular-material/angular-material.min.js"></script>
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script  src="https://sdk.scdn.co/spotify-player.js"></script>
 
     <script src="/public/main.js"></script>
-    <script src="/public/dashboard.controller.js"></script>
+    <script type=module src="/public/dashboard.controller.js"></script>
 
 </head>
-<body ng-app="spotifyApp" ng-strict-di ng-controller="MainController as main">
+<body ng-app="spotifyApp" ng-strict-di ng-controller="MainController as vm">
 <div class="wrapper">
 
     <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
@@ -56,6 +56,6 @@
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tracking.js/1.1.3/tracking-min.js"></script>
 <div id="top-tracks-container"></div>
-<script type="module" src="/public/dashboard.js"></script>
+<!--<script type="module" src="/public/dashboard.js"></script>-->
 </body>
 </html>
