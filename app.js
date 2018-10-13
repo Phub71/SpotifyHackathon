@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const db = require('./server/database');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 
 require('dotenv').config();
 const app = express();
@@ -78,6 +78,23 @@ app.post('/reactHappy', async function (request, response) {
 app.post('/reactSad', async function (request, response) {
   const {trackId, userId} = request.body;
   let reactSad = await db.reactSad(userId, trackId);
+  response.send({});
+  response.end();
+});
+
+app.post('/createPlaylist', async function (request, response) {
+  const {user_id, access_token} = request.cookies;
+  const spotifyApi = new SpotifyWebApi({
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET
+  });
+  spotifyApi.setAccessToken(access_token);
+  const playlist = (await spotifyApi.createPlaylist(user_id, "Hacked!")).body;
+
+  const songs = await db.listSongs();
+  const trackIds = songs.map(song => "spotify:track:" + song.track_id);
+  await spotifyApi.addTracksToPlaylist(playlist.id, trackIds);
+
   response.send({});
   response.end();
 });

@@ -49,7 +49,9 @@ function init(app) {
         'user-read-birthdate',
         'user-read-email',
         'user-read-private',
-        'user-modify-playback-state'
+        'user-modify-playback-state',
+        'playlist-modify-public',
+        'playlist-modify-private'
     ];
     res.redirect('https://accounts.spotify.com/authorize?' +
       querystring.stringify({

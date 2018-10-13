@@ -58,6 +58,13 @@
 <div id="top-tracks-container"></div>
 <script type="module" src="/public/dashboard.js"></script>
 
+<button class="create-playlist">Create playlist</button>
+<script type="module">
+  import {post} from '../public/network.js';
+  $('.create-playlist').on('click',()=>{
+    post('/createPlaylist');
+  });
+</script>
 <input id=input type="text">
 <div id=list></div>
 <script type="module">
