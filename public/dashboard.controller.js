@@ -1,4 +1,5 @@
 import {get, post} from "./network.js";
+import {play} from "./player.js";
 
 angular.module('spotifyApp')
     .controller('MainController', ['$timeout', '$scope',
@@ -35,7 +36,30 @@ angular.module('spotifyApp')
             };
 
 
+            $scope.happy = function(item){
+                post('/reactHappy', {userId: item.user.id, trackId: item.track.id}).then(
+                    function(){
+                        $scope.loading = true;
+                        self.refresh();
+                    }
+                );
+            };
+
+            $scope.sad= function(item){
+                post('/reactSad', {userId: item.user.id, trackId: item.track.id}).then(
+                    function(){
+                        $scope.loading = true;
+                        self.refresh();
+                    }
+                );
+            };
+
+            $scope.play = function(item){
+                play(item.track.id);
+            };
+
             self.refresh();
+
         }
 
     ]);

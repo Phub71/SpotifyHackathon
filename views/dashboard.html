@@ -62,14 +62,25 @@
                 </md-card-title-media>
             </md-card-title>
             <md-card-actions layout="row" layout-align="end center">
-                <md-button>Delete</md-button>
-                <md-button>React</md-button>
-                <md-button>Play</md-button>
+                <md-button ng-click="happy(item)">
+                    <md-icon md-svg-icon="/public/svg/happy.svg">{{item.emotions.happy}}</md-icon>
+                    <span>{{item.emotions.happy}}</span>
+                </md-button>
+
+                <md-button ng-click="sad(item)">
+                    <md-icon md-svg-icon="/public/svg/sad.svg">{{item.emotions.happy}}</md-icon>
+                    <span>{{item.emotions.sad}}</span>
+                </md-button>
+
+                <md-button ng-click="play(item)">
+                    <md-icon md-svg-icon="/public/svg/play.svg"></md-icon>
+                </md-button>
+
+
             </md-card-actions>
         </md-card>
 
     </md-content>
-
 
     <!-- Your web-app is https, so your scripts need to be too -->
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"
