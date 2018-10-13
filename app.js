@@ -19,10 +19,67 @@ app.get("/", function (request, response) {
 const auth_app = require('./server/auth-app');
 auth_app.init(app);
 
+var SpotifyWebApi = require('spotify-web-api-node');
+
+// The object we'll use to interact with the API
+var spotifyApi = new SpotifyWebApi({
+  clientId : process.env.CLIENT_ID,
+  clientSecret : process.env.CLIENT_SECRET
+});
+
+// Using the Client Credentials auth flow, authenticate our app
+spotifyApi.clientCredentialsGrant()
+  .then(function(data) {
+
+    // Save the access token so that it's used in future calls
+    spotifyApi.setAccessToken(data.body['access_token']);
+
+  }, function(err) {
+    console.log('Something went wrong when retrieving an access token', err.message);
+  });
+
 //-------------------------------------------------------------//
 //------------------------- API CALLS -------------------------//
 //-------------------------------------------------------------//
 
+app.get ('/addSong', async function (request, response){
+  const body = JSON.parse(request.body);
+  await db.addSong(body.user_id, body.track_id);
+  response.send('ok');
+});
+
+app.get ('/removeSong', async function (request, response){
+    var user_id = await spotifyApi.getUser('jy0brm5nucctbr6sp5v2mjc64');
+    var track_id = await spotifyApi.getTrack('3kpYJjvM8Ja6btr5hEJLWc');
+    let removeSong = await db.removeSong(user_id, track_id);
+    response.send(removeSong);
+});
+
+app.get ('reactHappy', async function (){
+    var user_id = await spotifyApi.getUser('jy0brm5nucctbr6sp5v2mjc64');
+    var track_id = await spotifyApi.getTrack('3kpYJjvM8Ja6btr5hEJLWc');
+    let reactHappy = await db.reactHappy(user_id,track_id);
+    response.send(reactHappy);
+});
+
+app.get ('reactSad', async function (){
+    var user_id = await spotifyApi.getUser('jy0brm5nucctbr6sp5v2mjc64');
+    var track_id = await spotifyApi.getTrack('3kpYJjvM8Ja6btr5hEJLWc');
+    let reactSad = await db.reactSad(user_id,track_id);
+    response.send(reactSad);
+});
+
+app.get ('/listSongs', async function (request, response){
+  let listSongs = await db.listSongs();
+
+  const users = await Promise.all(listSongs.map(song => spotifyApi.getUser(song.user_id))) ;
+  const tracks = await spotifyApi.getTracks(listSongs.map(song => song.track_id));
+  const result = {
+    users, tracks
+  };
+  response.send(result);
+  response.end();
+});
 
 app.get('/search-track', function (request, response) {
 
@@ -106,17 +163,19 @@ app.get('/artist-top-tracks', function (request, response) {
 // We make these requests from client.js
 
 async function testDb() {
-  db.create();
   await db.addSong(10, 10);
   await db.reactHappy(10,10);
   const songs = await db.listSongs();
   console.log(songs);
   console.log(songs.map(song => song.track_id));
 
-  db.close();
 }
+
+db.create();
 
 testDb();
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+
+// db.close();
