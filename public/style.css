@@ -17,6 +17,43 @@ body {
     background: linear-gradient(to right, #cbad6d, #d53369); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+.wrapper{
+	padding-top: 7em;
+	height:700px;
+	width:80%;
+	margin-left:auto;
+	margin-right:auto;
+
+}
+
+.content{
+	width: 50%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+h1{
+	color:white;
+	font-size: 72px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 700;
+	text-align: center;
+}
+
+h2{
+	color:white;
+	font-size: 48px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
+	text-align: center;	
+}
+
+.btn{
+	margin-top: 2em;
+	position: relative;
+	left:34em;
+}
+
 header {
     padding: 10px 40px;
 }
