@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const db = require('./server/database');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 
 require('dotenv').config();
 const app = express();
@@ -10,7 +10,7 @@ const app = express();
 // http://expressjs.com/en/starter/static-files.html
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
-app.use('/', express.static(path.join(__dirname, 'views'),{index:false,extensions:['html']}));
+app.use('/', express.static(path.join(__dirname, 'views'), {index: false, extensions: ['html']}));
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
@@ -68,18 +68,33 @@ app.post('/removeSong', async function (request, response) {
   response.end();
 });
 
-app.post('reactHappy', async function (request, response) {
-  const userId = request.cookies.user_id;
-  const {trackId} = request.body;
+app.post('/reactHappy', async function (request, response) {
+  const {trackId, userId} = request.body;
   let reactHappy = await db.reactHappy(userId, trackId);
   response.send({});
   response.end();
 });
 
-app.post('reactSad', async function (request, response) {
-  const userId = request.cookies.user_id;
-  const {trackId} = request.body;
+app.post('/reactSad', async function (request, response) {
+  const {trackId, userId} = request.body;
   let reactSad = await db.reactSad(userId, trackId);
+  response.send({});
+  response.end();
+});
+
+app.post('/createPlaylist', async function (request, response) {
+  const {user_id, access_token} = request.cookies;
+  const spotifyApi = new SpotifyWebApi({
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET
+  });
+  spotifyApi.setAccessToken(access_token);
+  const playlist = (await spotifyApi.createPlaylist(user_id, "Hacked!")).body;
+
+  const songs = await db.listSongs();
+  const trackIds = songs.map(song => "spotify:track:" + song.track_id);
+  await spotifyApi.addTracksToPlaylist(playlist.id, trackIds);
+
   response.send({});
   response.end();
 });
@@ -90,9 +105,13 @@ app.get('/listSongs', async function (request, response) {
   const users = await Promise.all(userIds.map(async id => (await spotifyApi.getUser(id)).body));
   const tracks = (await spotifyApi.getTracks(listSongs.map(song => song.track_id))).body.tracks;
 
-  const result = listSongs.map(({user_id, track_id}) => ({
+  const result = listSongs.map(({user_id, track_id, happy_emotion, sad_emotion}) => ({
     track: tracks.find(track => track.id === track_id),
-    user: users.find(user => user.id === user_id)
+    user: users.find(user => user.id === user_id),
+    emotions: {
+      happy: happy_emotion,
+      sad: sad_emotion
+    }
   }));
   response.send(result);
   response.end();
