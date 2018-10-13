@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const db = require('./server/database');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser')
 
 require('dotenv').config();
 const app = express();
@@ -13,6 +14,7 @@ app.use('/', express.static(path.join(__dirname, 'views'),{index:false,extension
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
+app.use(cookieParser())
 app.use(bodyParser.json());
 app.use((req, resp, next) => {
   console.log("Request body:", req.body);
