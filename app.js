@@ -1,44 +1,23 @@
-var express = require('express');
-var app = express();
-require('dotenv').config();
+const express = require('express');
+const path = require('path');
 const db = require('./server/database');
 
-// http://expressjs.com/en/starter/static-files.html
-app.use('/public', express.static('public'));
+require('dotenv').config();
+const app = express();
 
-// http://expressjs.com/en/starter/basic-routing.html
+// http://expressjs.com/en/starter/static-files.html
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/', express.static(path.join(__dirname, 'views'),{index:false,extensions:['html']}));
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
 
-app.get("/video", function (request, response) {
-  response.sendFile(__dirname + '/views/video.html');
-});
-
 //-------------------------------------------------------------//
-//----------------------- AUTHORIZATION -----------------------//
+//------------- AUTHORIZATION === auth-app.js -----------------//
 //-------------------------------------------------------------//
 
-// Initialize Spotify API wrapper
-var SpotifyWebApi = require('spotify-web-api-node');
-
-// The object we'll use to interact with the API
-var spotifyApi = new SpotifyWebApi({
-  clientId : process.env.CLIENT_ID,
-  clientSecret : process.env.CLIENT_SECRET
-});
-
-// Using the Client Credentials auth flow, authenticate our app
-spotifyApi.clientCredentialsGrant()
-  .then(function(data) {
-
-    // Save the access token so that it's used in future calls
-    spotifyApi.setAccessToken(data.body['access_token']);
-
-  }, function(err) {
-    console.log('Something went wrong when retrieving an access token', err.message);
-  });
-
+const auth_app = require('./server/auth-app');
+auth_app.init(app);
 
 //-------------------------------------------------------------//
 //------------------------- API CALLS -------------------------//
@@ -93,6 +72,7 @@ app.get('/search-track', function (request, response) {
       console.error(err);
     });
 });
+
 
 app.get('/category-playlists', function (request, response) {
 
@@ -164,7 +144,10 @@ async function testDb() {
   db.create();
   await db.addSong(10, 10);
   await db.reactHappy(10,10);
-  console.log(await db.listSongs());
+  const songs = await db.listSongs();
+  console.log(songs);
+  console.log(songs.map(song => song.track_id));
+
   db.close();
 }
 
@@ -172,4 +155,3 @@ testDb();
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
-
