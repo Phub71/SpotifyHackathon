@@ -53,7 +53,7 @@ spotifyApi.clientCredentialsGrant()
 //-------------------------------------------------------------//
 
 app.post('/addSong', async function (request, response) {
-  const userId = req.cookies.user_id;
+  const userId = request.cookies.user_id;
   const {trackId} = request.body;
   await db.addSong(userId, trackId);
   response.send({});
@@ -61,7 +61,7 @@ app.post('/addSong', async function (request, response) {
 });
 
 app.post('/removeSong', async function (request, response) {
-  const userId = req.cookies.user_id;
+  const userId = request.cookies.user_id;
   const {trackId} = request.body;
   let removeSong = await db.removeSong(userId, trackId);
   response.send({});
@@ -69,7 +69,7 @@ app.post('/removeSong', async function (request, response) {
 });
 
 app.post('reactHappy', async function (request, response) {
-  const userId = req.cookies.user_id;
+  const userId = request.cookies.user_id;
   const {trackId} = request.body;
   let reactHappy = await db.reactHappy(userId, trackId);
   response.send({});
@@ -77,7 +77,7 @@ app.post('reactHappy', async function (request, response) {
 });
 
 app.post('reactSad', async function (request, response) {
-  const userId = req.cookies.user_id;
+  const userId = request.cookies.user_id;
   const {trackId} = request.body;
   let reactSad = await db.reactSad(userId, trackId);
   response.send({});
@@ -100,7 +100,7 @@ app.get('/listSongs', async function (request, response) {
 
 app.post('/search-track', async function (request, response) {
   const {name} = request.body;
-  const data = await spotifyApi.searchTracks('track:' + name, {limit: 10});
+  const data = await spotifyApi.searchTracks('track:' + name, {limit: 5});
   response.send(data.body.tracks.items);
   response.end();
 });
