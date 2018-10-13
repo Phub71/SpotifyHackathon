@@ -54,25 +54,41 @@
     </md-content>
 
     <div class="wrapper1 clearfix">
-        <aside class="note-wrap" ng-class="{'note-yellow' : ($index % 2 == 0) , 'note-pink': ($index % 2 == 0)}"
+        <aside class="note-wrap" ng-style="{'background': getBackground()}"
                ng-repeat="item in tracks">
-            <span>{{item.track.name | limitTo: 20}}</span>
-            <span>{{item.track.artists[0]['name']}}</span>
+            <div layout="row" layout-align="start center" flex>
+                <img class="user-image" ng-src="/public/svg/account.svg" ng-if="!item.user.images[0].url">
+                <img class="user-image" ng-src="{{item.user.images[0].url}}" ng-if="item.user.images[0].url">
+                <span class="user-name">{{item.user.display_name}}</span>
+            </div>
 
-            <md-button ng-click="happy(item)">
-                <md-icon md-svg-icon="/public/svg/happy.svg">{{item.emotions.happy}}</md-icon>
-                <span>{{item.emotions.happy}}</span>
-            </md-button>
+            <div class="content">
+                <img ng-src="{{item.track.album.images[0]['url']}}" class="album-image">
 
-            <md-button ng-click="sad(item)">
-                <md-icon md-svg-icon="/public/svg/sad.svg">{{item.emotions.happy}}</md-icon>
-                <span>{{item.emotions.sad}}</span>
-            </md-button>
+                <p class="song-title">{{item.track.name | limitTo: 20}}</p>
+                <p class="artist">{{item.track.artists[0]['name']}}</p>
 
-            <md-button ng-click="playStop(item)">
-                <md-icon md-svg-icon="/public/svg/play.svg" ng-if="!isTrackPlaying(item)"></md-icon>
-                <md-icon md-svg-icon="/public/svg/pause.svg" ng-if="isTrackPlaying(item)"></md-icon>
-            </md-button>
+
+                <div layout="row" layout-align="end center" flex>
+
+                    <div layout="row" layout-align="end center">
+                        <md-button ng-click="happy(item)" aria-label="happy">
+                            <md-icon md-svg-icon="/public/svg/happy.svg">{{item.emotions.happy}}</md-icon>
+                            <span>{{item.emotions.happy}}</span>
+                        </md-button>
+
+                        <md-button ng-click="sad(item)" aria-label="sad">
+                            <md-icon md-svg-icon="/public/svg/sad.svg">{{item.emotions.happy}}</md-icon>
+                            <span>{{item.emotions.sad}}</span>
+                        </md-button>
+
+                        <md-button ng-click="playStop(item)" aria-label="playStop">
+                            <md-icon md-svg-icon="/public/svg/play.svg" ng-if="!isTrackPlaying(item)"></md-icon>
+                            <md-icon md-svg-icon="/public/svg/pause.svg" ng-if="isTrackPlaying(item)"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+            </div>
 
         </aside>
     </div>
