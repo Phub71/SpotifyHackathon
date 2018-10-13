@@ -20,7 +20,7 @@ function listSongs() {
 
 function addSong(userId, trackId) {
   return new Promise((resolve, reject) => {
-    db.run(`INSERT INTO songs (user_id, track_id) VALUES (?, ?) WHERE NOT EXISTS(SELECT 1 FROM songs WHERE user_id = ? AND track_id = ?);`, userId, trackId,
+    db.run(`INSERT INTO songs (user_id, track_id) VALUES (?, ?);`, userId, trackId,
       (error) => {
         if (error) reject(error);
         resolve();
