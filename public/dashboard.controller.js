@@ -35,7 +35,6 @@ angular.module('spotifyApp')
             };
 
 
-
             self.refresh();
         }
 
