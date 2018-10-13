@@ -37,6 +37,7 @@ var generateRandomString = function(length) {
 };
 
 function init(app){
+  app.use(cookieParser());
 
   app.get('/login', function(req, res) {
 
