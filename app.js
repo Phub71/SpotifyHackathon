@@ -41,8 +41,6 @@ app.get('/search-track', function (request, response) {
 
 app.get('/category-playlists', function (request, response) {
 
-  spotifyApi.getTr
-
   // Get playlists from a browse category
   // Find out which categories are available here: https://beta.developer.spotify.com/console/get-browse-categories/
   spotifyApi.getPlaylistsForCategory('jazz', { limit : 5 })
