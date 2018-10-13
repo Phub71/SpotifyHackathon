@@ -56,3 +56,22 @@ export function play(uri) {
         }
     });
 }
+
+export function pause(uri) {
+    if(!deviceId) {
+        console.error("Awaiting device id");
+        return;
+    }
+    const data = {
+        uris: ["spotify:track:" + uri]
+    };
+    $.ajax({
+        url: "https://api.spotify.com/v1/me/player/pause?device_id=" + deviceId,
+        type: "PUT",
+        data: JSON.stringify(data),
+        beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + access_token );},
+        success: function(data) {
+            console.log(data)
+        }
+    });
+}
