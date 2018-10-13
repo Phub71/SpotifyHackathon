@@ -1,11 +1,10 @@
 import {get, post} from "./network.js";
-import {play,pause} from "./player.js";
+import {play, pause, isCurrentSong} from "./player.js";
 
 angular.module('spotifyApp')
     .controller('MainController', ['$timeout', '$scope',
         function ($timeout, $scope) {
             var self = this;
-            $scope.isPlaying = false;
 
             self.refresh = function(){
                 $scope.loading = true;
@@ -64,8 +63,12 @@ angular.module('spotifyApp')
                 );
             };
 
+            $scope.isTrackPlaying = function(item){
+                return isCurrentSong(item.track.id)
+            };
+
             $scope.playStop = function(item){
-                if ($scope.isPlaying){
+                if ($scope.isTrackPlaying(item)){
                     $scope.pause(item);
                 }else{
                     $scope.play(item);
@@ -74,12 +77,10 @@ angular.module('spotifyApp')
 
             $scope.play = function(item){
                 play(item.track.id);
-                $scope.isPlaying = true;
             };
 
             $scope.pause = function (item) {
                 pause(item.track.id);
-                $scope.isPlaying = false;
             };
 
             self.refresh();

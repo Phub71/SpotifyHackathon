@@ -67,7 +67,7 @@ function getCurrentTrackId() {
 }
 
 export function isCurrentSong(id) {
-    return !currentState.paused && getCurrentTrackId() === id;
+    return currentState && !currentState.paused && getCurrentTrackId() === id;
 }
 
 export function pause(uri) {
