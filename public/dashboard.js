@@ -1,20 +1,11 @@
-$(function() {
+import {get, post} from "./network.js";
 
+async function run() {
+  const songs = await get('/listSongs');
+  songs.tracks.map(track => {
+    const trackName = $('<li>' + track.name + '</li>');
+    trackName.appendTo('#top-tracks-container');
+  });
+}
 
-    $.get('/tracks', function(data) {
-        // Display the audio features
-        data.map(function(track, i) {
-            console.log(track)
-            var trackName = $('<li>' + track.name + '</li>');
-            trackName.appendTo('#top-tracks-container');
-        });
-
-
-
-    });
-
-
-
-
-
-});
+run();
