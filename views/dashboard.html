@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/public/style.css">
     <link rel="stylesheet" href="/node_modules/angular-material/angular-material.min.css"/>
     <link rel="stylesheet" href="/public/style-stickyNote.css">
+    <link rel="stylesheet" href="/public/style-widget.css">
 
 
     <script src="/node_modules/angular/angular.min.js"></script>
@@ -40,6 +41,29 @@
             </md-input-container>
 
         </div>
+        <section class="music-player">
+            <header class="music-player--banner"></header>
+            <main class="music-player--main">
+                <div class="music-player--progress">
+                    <progress class="progress--progress-bar" value="43" max="100"></progress>
+                    <div class="progress--time">1:37</div>
+                    <div class="progress--time progress--time__end">3:52</div>
+                </div>
+                <div class="music-player--controls">
+                    <i class="fa fa-pause controls--play-button"></i>
+
+                    <div class="song-info">
+                        <div class="song-info--title">Is This Love</div>
+                        <div class="song-info--artist">Bob Marley</div>
+                    </div>
+                    <div class="controls--actions">
+                        <i class="fa fa-retweet actions--repeat"></i>
+                        <i class="fa fa-backward actions--back"></i>
+                        <i class="fa fa-forward actions--forward"></i>
+                    </div>
+                </div>
+            </main>
+        </section>
     </md-toolbar>
 
     <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
