@@ -1,18 +1,15 @@
-var express = require('express');
-var app = express();
-require('dotenv').config();
+const express = require('express');
+const path = require('path');
 const db = require('./server/database');
 
-// http://expressjs.com/en/starter/static-files.html
-app.use('/public', express.static('public'));
+require('dotenv').config();
+const app = express();
 
-// http://expressjs.com/en/starter/basic-routing.html
+// http://expressjs.com/en/starter/static-files.html
+app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/', express.static(path.join(__dirname, 'views'),{index:false,extensions:['html']}));
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
-});
-
-app.get("/video", function (request, response) {
-  response.sendFile(__dirname + '/views/video.html');
 });
 
 //-------------------------------------------------------------//
@@ -59,7 +56,10 @@ app.get('/search-track', function (request, response) {
     });
 });
 
+
 app.get('/category-playlists', function (request, response) {
+
+  spotifyApi.getTr
 
   // Get playlists from a browse category
   // Find out which categories are available here: https://beta.developer.spotify.com/console/get-browse-categories/
@@ -129,7 +129,10 @@ async function testDb() {
   db.create();
   await db.addSong(10, 10);
   await db.reactHappy(10,10);
-  console.log(await db.listSongs());
+  const songs = await db.listSongs();
+  console.log(songs);
+  console.log(songs.map(song => song.track_id));
+
   db.close();
 }
 
