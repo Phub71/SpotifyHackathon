@@ -26,32 +26,6 @@
     <script src="/public/main.js"></script>
     <script src="/public/dashboard.controller.js"></script>
 
-    <script>
-      const {access_token, user_id} = document.cookie.split(';').reduce((acc, token) => {
-        const [key, value] = token.split('=');
-        acc[key.trim()] = value.trim();
-        return acc;
-      }, {});
-
-      window.onSpotifyWebPlaybackSDKReady = () => {
-        const id = 'Web Playback SDK Quick Start Player';
-        const track = 'spotify:track:7xGfFoTpQ2E7fRF5lN10tr';
-        const player = new Spotify.Player({
-          name: id,
-          getOAuthToken: cb => cb(access_token),
-        });
-        fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
-          method: 'PUT',
-          body: JSON.stringify({uris: [track]}),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${access_token}`
-          },
-        });
-      };
-
-    </script>
-
 </head>
 <body ng-app="spotifyApp" ng-strict-di ng-controller="MainController as main">
 <div class="wrapper">
@@ -81,6 +55,7 @@
         integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tracking.js/1.1.3/tracking-min.js"></script>
+<div id="top-tracks-container"></div>
 <script type="module" src="/public/dashboard.js"></script>
 </body>
 </html>
