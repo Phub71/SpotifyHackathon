@@ -2,11 +2,11 @@ body { background: #EFEFEF; font-family: sans-serif}
 
 .music-player {
     background: white;
-    border-radius: 15px;
+    border-radius: 10px;
     box-shadow: 0 20px 50px -30px #000;
     width: 300px;
     overflow: hidden;
-    margin: 50px auto;
+    margin: 10px auto;
 }
 .music-player--banner {
     background: url(http://thecatholiccatalogue.com/wp-content/uploads/2013/05/bob-marley-photo.jpg);
