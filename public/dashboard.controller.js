@@ -5,6 +5,7 @@ angular.module('spotifyApp')
     .controller('MainController', ['$timeout', '$scope',
         function ($timeout, $scope) {
             var self = this;
+            $scope.isPlaying = false;
 
             self.refresh = function(){
                 $scope.loading = true;
@@ -63,12 +64,22 @@ angular.module('spotifyApp')
                 );
             };
 
+            $scope.playStop = function(item){
+                if ($scope.isPlaying){
+                    $scope.pause(item);
+                }else{
+                    $scope.play(item);
+                }
+            };
+
             $scope.play = function(item){
                 play(item.track.id);
+                $scope.isPlaying = true;
             };
 
             $scope.pause = function (item) {
                 pause(item.track.id);
+                $scope.isPlaying = false;
             };
 
             self.refresh();

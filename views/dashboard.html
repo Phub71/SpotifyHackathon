@@ -78,8 +78,9 @@
                             <span>{{item.emotions.sad}}</span>
                         </md-button>
 
-                        <md-button ng-click="play(item)">
-                            <md-icon md-svg-icon="/public/svg/play.svg"></md-icon>
+                        <md-button ng-click="playStop(item)">
+                            <md-icon md-svg-icon="/public/svg/play.svg" ng-if="!isPlaying"></md-icon>
+                            <md-icon md-svg-icon="/public/svg/pause.svg" ng-if="isPlaying"></md-icon>
                         </md-button>
 
 
