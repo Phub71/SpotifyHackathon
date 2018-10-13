@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const db = require('./server/database');
+const bodyParser = require('body-parser');
 
 require('dotenv').config();
 const app = express();
@@ -11,6 +12,11 @@ app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
 app.use('/', express.static(path.join(__dirname, 'views'),{index:false,extensions:['html']}));
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
+});
+app.use(bodyParser.json());
+app.use((req, resp, next) => {
+  console.log("Request body:", req.body);
+  next();
 });
 
 //-------------------------------------------------------------//
@@ -24,18 +30,18 @@ var SpotifyWebApi = require('spotify-web-api-node');
 
 // The object we'll use to interact with the API
 var spotifyApi = new SpotifyWebApi({
-  clientId : process.env.CLIENT_ID,
-  clientSecret : process.env.CLIENT_SECRET
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET
 });
 
 // Using the Client Credentials auth flow, authenticate our app
 spotifyApi.clientCredentialsGrant()
-  .then(function(data) {
+  .then(function (data) {
 
     // Save the access token so that it's used in future calls
     spotifyApi.setAccessToken(data.body['access_token']);
 
-  }, function(err) {
+  }, function (err) {
     console.log('Something went wrong when retrieving an access token', err.message);
   });
 
@@ -43,117 +49,53 @@ spotifyApi.clientCredentialsGrant()
 //------------------------- API CALLS -------------------------//
 //-------------------------------------------------------------//
 
-app.get ('/addSong', async function (request, response){
-  const body = JSON.parse(request.body);
-  await db.addSong(body.user_id, body.track_id);
-  response.send('ok');
+app.post('/addSong', async function (request, response) {
+  const userId = 'jy0brm5nucctbr6sp5v2mjc64';
+  const {trackId} = request.body;
+  await db.addSong(userId, trackId);
+  response.send({});
+  response.end();
 });
 
-app.get ('/removeSong', async function (request, response){
-    var user_id = await spotifyApi.getUser('jy0brm5nucctbr6sp5v2mjc64');
-    var track_id = await spotifyApi.getTrack('3kpYJjvM8Ja6btr5hEJLWc');
-    let removeSong = await db.removeSong(user_id, track_id);
-    response.send(removeSong);
+app.post('/removeSong', async function (request, response) {
+  const userId = 'jy0brm5nucctbr6sp5v2mjc64';
+  const {trackId} = request.body;
+  let removeSong = await db.removeSong(userId, trackId);
+  response.send({});
+  response.end();
 });
 
-app.get ('reactHappy', async function (){
-    var user_id = await spotifyApi.getUser('jy0brm5nucctbr6sp5v2mjc64');
-    var track_id = await spotifyApi.getTrack('3kpYJjvM8Ja6btr5hEJLWc');
-    let reactHappy = await db.reactHappy(user_id,track_id);
-    response.send(reactHappy);
+app.post('reactHappy', async function (request, response) {
+  const userId = 'jy0brm5nucctbr6sp5v2mjc64';
+  const {trackId} = request.body;
+  let reactHappy = await db.reactHappy(userId, trackId);
+  response.send({});
+  response.end();
 });
 
-app.get ('reactSad', async function (){
-    var user_id = await spotifyApi.getUser('jy0brm5nucctbr6sp5v2mjc64');
-    var track_id = await spotifyApi.getTrack('3kpYJjvM8Ja6btr5hEJLWc');
-    let reactSad = await db.reactSad(user_id,track_id);
-    response.send(reactSad);
+app.post('reactSad', async function (request, response) {
+  const userId = 'jy0brm5nucctbr6sp5v2mjc64';
+  const {trackId} = request.body;
+  let reactSad = await db.reactSad(userId, trackId);
+  response.send({});
+  response.end();
 });
 
-app.get ('/listSongs', async function (request, response){
-  let listSongs = await db.listSongs();
-
+app.get('/listSongs', async function (request, response) {
+  const listSongs = await db.listSongs();
   const users = await Promise.all(listSongs.map(async song => (await spotifyApi.getUser(song.user_id)).body));
   const tracks = (await spotifyApi.getTracks(listSongs.map(song => song.track_id))).body.tracks;
-  const result = {
-    users, tracks
-  };
+  const result = {users, tracks};
   response.send(result);
   response.end();
 });
 
-app.get('/search-track', function (request, response) {
-
-  // Search for a track!
-  spotifyApi.searchTracks('track:Hey Jude', {limit: 1})
-    .then(function(data) {
-
-      // Send the first (only) track object
-      response.send(data.body.tracks.items[0]);
-
-    }, function(err) {
-      console.error(err);
-    });
+app.post('/search-track', async function (request, response) {
+  const {name} = request.body;
+  const data = await spotifyApi.searchTracks('track:' + name, {limit: 10});
+  response.send(data.body.tracks.items);
+  response.end();
 });
-
-
-app.get('/category-playlists', function (request, response) {
-
-  // Get playlists from a browse category
-  // Find out which categories are available here: https://beta.developer.spotify.com/console/get-browse-categories/
-  spotifyApi.getPlaylistsForCategory('jazz', { limit : 5 })
-    .then(function(data) {
-
-      // Send the list of playlists
-      response.send(data.body.playlists);
-
-    }, function(err) {
-      console.error(err);
-    });
-});
-
-app.get('/audio-features', function (request, response) {
-
-  // Get the audio features for a track ID
-  spotifyApi.getAudioFeaturesForTrack('4uLU6hMCjMI75M1A2tKUQC')
-    .then(function(data) {
-
-      //Send the audio features object
-      response.send(data.body);
-
-    }, function(err) {
-      console.error(err);
-    });
-});
-
-app.get('/artist', function (request, response) {
-
-  // Get information about an artist
-  spotifyApi.getArtist('6jJ0s89eD6GaHleKKya26X')
-    .then(function(data) {
-
-      // Send the list of tracks
-      response.send(data.body);
-
-    }, function(err) {
-      console.error(err);
-    });
-});
-
-app.get('/tracks', function (request, response) {
-
-  // Get an artist's top tracks in a country
-  spotifyApi.getTracks(['7ouMYWpwJ422jRcDASZB7P', '4VqPOruhp5EdPBeR92t6lQ', '2takcwOaAZWiXQijPHIx7B'])
-    .then(function(data) {
-
-      // Send the list of tracks
-      response.send(data.body.tracks);
-
-    }, function(err) {
-      console.error(err);
-    });
-});
-
 
 //-------------------------------------------------------------//
 //------------------------ WEB SERVER -------------------------//

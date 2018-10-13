@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script type="module">
+    import {post, get} from '../public/network.js';
+
+    async function test() {
+      console.log(await get('/listSongs'));
+      await post('/addSong', {trackId: '4H157dvrPw2S3W8tMiOQVr'});
+      console.log(await get('/listSongs'));
+    }
+    test();
+</script>
+</body>
+</html>
