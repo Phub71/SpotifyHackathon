@@ -9,41 +9,14 @@
 }
 
 body {
-    padding: 40px 0;
+    padding:0;
+    margin:0;
+    background-color: #d53369;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #cbad6d, #d53369);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #cbad6d, #d53369); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
 }
 
 header {
     padding: 10px 40px;
-}
-
-h1 {
-    font-weight: bold;
-    color: #1ED760;
-    display: inline;
-}
-
-img {
-    display: inline-block;
-    width: 300px;
-    height: 300px;
-}
-
-.circle-image {
-    border-radius: 300px;
-}
-
-section {
-    padding: 30px 70px;
-    margin: 20px 0;
-    background-color: #f3f3f3;
-}
-
-footer {
-    text-align: center;
-}
-
-.big-number {
-    font-size: 40px;
-    font-weight: bold;
-    color: #1E3264;
 }

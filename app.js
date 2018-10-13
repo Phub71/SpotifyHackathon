@@ -14,11 +14,9 @@ app.get("/video", function (request, response) {
   response.sendFile(__dirname + '/views/video.html');
 });
 
-
 //-------------------------------------------------------------//
 //----------------------- AUTHORIZATION -----------------------//
 //-------------------------------------------------------------//
-
 
 // Initialize Spotify API wrapper
 var SpotifyWebApi = require('spotify-web-api-node');
