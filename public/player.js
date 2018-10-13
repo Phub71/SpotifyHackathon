@@ -45,9 +45,10 @@ export function play(uri) {
         console.error("Awaiting device id");
         return;
     }
-    const data = {
-        uris: ["spotify:track:" + uri]
-    };
+    const data = {};
+    if(uri !== getCurrentTrackId())
+        data.uris = ["spotify:track:" + uri];
+
     $.ajax({
         url: "https://api.spotify.com/v1/me/player/play?device_id=" + deviceId,
         type: "PUT",
@@ -59,8 +60,14 @@ export function play(uri) {
     });
 }
 
+function getCurrentTrackId() {
+    if(currentState && currentState.track_window && currentState.track_window.current_track) {
+        return currentState.track_window.current_track.id;
+    };
+}
+
 export function isCurrentSong(id) {
-    return !currentState.paused && currentState.track_window.id === id;
+    return !currentState.paused && getCurrentTrackId() === id;
 }
 
 export function pause(uri) {
@@ -69,9 +76,10 @@ export function pause(uri) {
         return;
     }
 
-    const data = {};
-    if(uri !== currentSong)
-      data.uris = ["spotify:track:" + uri];
+
+    const data = {
+        uris: ["spotify:track:" + uri]
+    };
 
     $.ajax({
         url: "https://api.spotify.com/v1/me/player/pause?device_id=" + deviceId,
