@@ -26,7 +26,7 @@
 
 </head>
 
-<div ng-app="spotifyApp" ng-strict-di ng-controller="MainController as vm" ng-cloak layout="column">
+<div ng-app="spotifyApp" ng-strict-di ng-controller="MainController as vm" ng-cloak layout="column" class="dashboard">
 
     <md-toolbar class="md-warn" layout="row">
         <div class="md-toolbar-tools">
@@ -53,10 +53,12 @@
         </md-list>
     </md-content>
 
-    <div class="wrapper clearfix" ng-repeat="item in tracks">
-        <aside class="note-wrap note-yellow">
+    <div class="wrapper1 clearfix">
+        <aside class="note-wrap" ng-class="{'note-yellow' : ($index % 2 == 0) , 'note-pink': ($index % 2 == 0)}"
+               ng-repeat="item in tracks">
             <span>{{item.track.name | limitTo: 20}}</span>
             <span>{{item.track.artists[0]['name']}}</span>
+
             <md-button ng-click="happy(item)">
                 <md-icon md-svg-icon="/public/svg/happy.svg">{{item.emotions.happy}}</md-icon>
                 <span>{{item.emotions.happy}}</span>

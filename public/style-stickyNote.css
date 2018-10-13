@@ -28,13 +28,13 @@
   *zoom: 1;
 }
 
-body {
-  background: url(https://i.imgur.com/2BdQt0g.jpg);
+.dashboard {
   margin: 0;
   padding: 0;
+  background-color: white;
 }
 
-.wrapper {
+.wrapper1 {
   margin: 60px auto 0 auto;
 }
 
@@ -96,7 +96,7 @@ body {
 }
 
 .note-blue {
-  background: #b9dcf4;
+  background: #f5e79875;
   -webkit-transform: rotate(-2deg);
   -moz-transform: rotate(-2deg);
   -o-transform: rotate(-2deg);
