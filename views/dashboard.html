@@ -6,13 +6,14 @@
 <head>
     <title>Spotify API Playground</title>
     <meta name="description" content="An introduction to interacting with the Spotify API">
-    <link id="favicon" rel="icon" href="https://cdn.glitch.com/project-avatar/b96c147f-8065-40a6-9908-4fcafce2a361.png" type="image/x-icon">
+    <link id="favicon" rel="icon" href="https://cdn.glitch.com/project-avatar/b96c147f-8065-40a6-9908-4fcafce2a361.png"
+          type="image/x-icon">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://sp-bootstrap.global.ssl.fastly.net/8.0.0/sp-bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/public/style.css">
-    <link rel="stylesheet" href="/node_modules/angular-material/angular-material.min.css" />
+    <link rel="stylesheet" href="/node_modules/angular-material/angular-material.min.css"/>
 
 
     <script src="/node_modules/angular/angular.min.js"></script>
@@ -20,9 +21,36 @@
     <script src="/node_modules/angular-aria/angular-aria.min.js"></script>
     <script src="/node_modules/angular-messages/angular-messages.min.js"></script>
     <script src="/node_modules/angular-material/angular-material.min.js"></script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
 
     <script src="/public/main.js"></script>
     <script src="/public/dashboard.controller.js"></script>
+
+    <script>
+      const {access_token, user_id} = document.cookie.split(';').reduce((acc, token) => {
+        const [key, value] = token.split('=');
+        acc[key.trim()] = value.trim();
+        return acc;
+      }, {});
+
+      window.onSpotifyWebPlaybackSDKReady = () => {
+        const id = 'Web Playback SDK Quick Start Player';
+        const track = 'spotify:track:7xGfFoTpQ2E7fRF5lN10tr';
+        const player = new Spotify.Player({
+          name: id,
+          getOAuthToken: cb => cb(access_token),
+        });
+        fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
+          method: 'PUT',
+          body: JSON.stringify({uris: [track]}),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${access_token}`
+          },
+        });
+      };
+
+    </script>
 
 </head>
 <body ng-app="spotifyApp" ng-strict-di ng-controller="MainController as main">
@@ -45,11 +73,7 @@
     </md-card>
 
 
-
-
 </div>
-
-
 
 
 <!-- Your web-app is https, so your scripts need to be too -->
