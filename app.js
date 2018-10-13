@@ -53,7 +53,7 @@ spotifyApi.clientCredentialsGrant()
 //-------------------------------------------------------------//
 
 app.post('/addSong', async function (request, response) {
-  const userId = 'jy0brm5nucctbr6sp5v2mjc64';
+  const userId = req.cookies.user_id;
   const {trackId} = request.body;
   await db.addSong(userId, trackId);
   response.send({});
@@ -61,7 +61,7 @@ app.post('/addSong', async function (request, response) {
 });
 
 app.post('/removeSong', async function (request, response) {
-  const userId = 'jy0brm5nucctbr6sp5v2mjc64';
+  const userId = req.cookies.user_id;
   const {trackId} = request.body;
   let removeSong = await db.removeSong(userId, trackId);
   response.send({});
@@ -69,7 +69,7 @@ app.post('/removeSong', async function (request, response) {
 });
 
 app.post('reactHappy', async function (request, response) {
-  const userId = 'jy0brm5nucctbr6sp5v2mjc64';
+  const userId = req.cookies.user_id;
   const {trackId} = request.body;
   let reactHappy = await db.reactHappy(userId, trackId);
   response.send({});
@@ -77,7 +77,7 @@ app.post('reactHappy', async function (request, response) {
 });
 
 app.post('reactSad', async function (request, response) {
-  const userId = 'jy0brm5nucctbr6sp5v2mjc64';
+  const userId = req.cookies.user_id;
   const {trackId} = request.body;
   let reactSad = await db.reactSad(userId, trackId);
   response.send({});
@@ -86,9 +86,14 @@ app.post('reactSad', async function (request, response) {
 
 app.get('/listSongs', async function (request, response) {
   const listSongs = await db.listSongs();
-  const users = await Promise.all(listSongs.map(async song => (await spotifyApi.getUser(song.user_id)).body));
+  const userIds = Array.from(new Set(listSongs.map(song => song.user_id)));
+  const users = await Promise.all(userIds.map(async id => (await spotifyApi.getUser(id)).body));
   const tracks = (await spotifyApi.getTracks(listSongs.map(song => song.track_id))).body.tracks;
-  const result = {users, tracks};
+
+  const result = listSongs.map(({user_id, track_id}) => ({
+    track: tracks.find(track => track.id === track_id),
+    user: users.find(user => user.id === user_id)
+  }));
   response.send(result);
   response.end();
 });
