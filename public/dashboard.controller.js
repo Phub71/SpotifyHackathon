@@ -5,41 +5,40 @@ angular.module('spotifyApp')
     .controller('MainController', ['$timeout', '$scope',
         async function ($timeout, $scope) {
             var self = this;
-            $scope.loading = true;
 
             self.refresh = function(){
+                $scope.loading = true;
                 get('/listSongs').then(function(res){
                     $scope.tracks = res;
                     $scope.loading = false;
                 });
             };
 
-            $scope.addSong = function () {
-                console.log(798)
+            $scope.searchForSong = function(){
+                $scope.findTracks();
             };
 
-            $scope.findTracks = async function () {
+            $scope.findTracks = function () {
+                $scope.loading = true;
                 post('search-track', {name: $scope.newSong}).then(function(res){
                     $scope.newTracks = res;
+                    $scope.loading = false;
                 });
             };
 
             $scope.postSong = function(id){
-                $scope.loading = true;
                 post('/addSong', {trackId: id}).then(
                     function(){
-                        $scope.loading = true;
                         $scope.newTracks = [];
+                        $scope.newSong = '';
                         self.refresh();
                     }
                 );
             };
 
-
             $scope.happy = function(item){
                 post('/reactHappy', {userId: item.user.id, trackId: item.track.id}).then(
                     function(){
-                        $scope.loading = true;
                         self.refresh();
                     }
                 );
@@ -48,7 +47,6 @@ angular.module('spotifyApp')
             $scope.sad= function(item){
                 post('/reactSad', {userId: item.user.id, trackId: item.track.id}).then(
                     function(){
-                        $scope.loading = true;
                         self.refresh();
                     }
                 );
@@ -58,9 +56,7 @@ angular.module('spotifyApp')
                 play(item.track.id);
             };
 
-
             self.refresh();
-
         }
 
     ]);
