@@ -11,6 +11,7 @@
     <link href="https://sp-bootstrap.global.ssl.fastly.net/8.0.0/sp-bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/public/style.css">
     <link rel="stylesheet" href="/node_modules/angular-material/angular-material.min.css"/>
+    <link rel="stylesheet" href="/public/style-stickyNote.css">
 
 
     <script src="/node_modules/angular/angular.min.js"></script>
@@ -29,18 +30,20 @@
 
     <md-toolbar class="md-warn" layout="row">
         <div class="md-toolbar-tools">
-            Loading {{loading}}
-            <md-button ng-click="addSong()">Add</md-button>
 
             <md-input-container>
                 <label>Song title</label>
-                <input ng-model="newSong">
+                <input name="message"
+                       ng-model="newSong"
+                       placeholder="Seach for a song"
+                       ng-keyup="$event.keyCode == 13 ? searchForSong() : null"/>
             </md-input-container>
-
-            <md-button ng-click="findTracks()">Search</md-button>
 
         </div>
     </md-toolbar>
+
+    <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
+
 
     <md-content>
         <md-list>
@@ -51,34 +54,47 @@
     </md-content>
 
     <md-content flex layout-padding>
-        <md-card ng-repeat="item in tracks" ng-if="!loading">
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline">{{item.track.name}}</span>
-                    <span class="md-subhead">{{item.track.artists[0]['name']}}</span>
-                </md-card-title-text>
-                <md-card-title-media>
-                    <div class="md-media-lg card-media"></div>
-                </md-card-title-media>
-            </md-card-title>
-            <md-card-actions layout="row" layout-align="end center">
-                <md-button ng-click="happy(item)">
-                    <md-icon md-svg-icon="/public/svg/happy.svg">{{item.emotions.happy}}</md-icon>
-                    <span>{{item.emotions.happy}}</span>
-                </md-button>
+        <md-grid-list
+                md-cols="1" md-cols-sm="2" md-cols-md="3" md-cols-gt-md="6"
+                md-row-height-gt-md="1:1" md-row-height="4:3"
+                md-gutter="8px" md-gutter-gt-sm="4px" >
 
-                <md-button ng-click="sad(item)">
-                    <md-icon md-svg-icon="/public/svg/sad.svg">{{item.emotions.happy}}</md-icon>
-                    <span>{{item.emotions.sad}}</span>
-                </md-button>
+            <md-grid-tile ng-repeat="item in tracks" style="background: cadetblue">
 
-                <md-button ng-click="play(item)">
-                    <md-icon md-svg-icon="/public/svg/play.svg"></md-icon>
-                </md-button>
+                <div layout="column">
 
+                    <div layout="column">
+                        <span class="md-headline">{{item.track.name | limitTo: 20}}</span>
+                        <span class="md-subhead">{{item.track.artists[0]['name']}}</span>
+                    </div>
 
-            </md-card-actions>
-        </md-card>
+                    <div layout="row" layout-align="end center">
+                        <md-button ng-click="happy(item)">
+                            <md-icon md-svg-icon="/public/svg/happy.svg">{{item.emotions.happy}}</md-icon>
+                            <span>{{item.emotions.happy}}</span>
+                        </md-button>
+
+                        <md-button ng-click="sad(item)">
+                            <md-icon md-svg-icon="/public/svg/sad.svg">{{item.emotions.happy}}</md-icon>
+                            <span>{{item.emotions.sad}}</span>
+                        </md-button>
+
+                        <md-button ng-click="playStop(item)">
+                            <md-icon md-svg-icon="/public/svg/play.svg" ng-if="!isTrackPlaying(item)"></md-icon>
+                            <md-icon md-svg-icon="/public/svg/pause.svg" ng-if="isTrackPlaying(item)"></md-icon>
+                        </md-button>
+
+                    </div>
+                </div>
+
+            </md-grid-tile>
+        </md-grid-list>
+
+        <div class="wrapper clearfix">
+        		<aside class="note-wrap note-yellow">
+        			<p>Adele</p>
+        			<a href="https://open.spotify.com/track/4aebBr4JAihzJQR0CiIZJv?si=bUxN2YGxRw29x3S9ZtwDJA">Hello</a>
+        		</aside>
 
     </md-content>
 
