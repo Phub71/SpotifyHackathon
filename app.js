@@ -109,6 +109,7 @@ app.get('/listSongs', async function (request, response) {
   const users = await Promise.all(userIds.map(async id => (await spotifyApi.getUser(id)).body));
   const tracks = (await spotifyApi.getTracks(listSongs.map(song => song.track_id))).body.tracks;
 
+
   const result = listSongs.map(({user_id, track_id, happy_emotion, sad_emotion}) => ({
     track: tracks.find(track => track.id === track_id),
     user: users.find(user => user.id === user_id),
@@ -136,17 +137,7 @@ app.post('/search-track', async function (request, response) {
 // Listen for requests to our app
 // We make these requests from client.js
 
-async function testDb() {
-  await db.addSong('jy0brm5nucctbr6sp5v2mjc64', '3kpYJjvM8Ja6btr5hEJLWc');
-  const songs = await db.listSongs();
-  console.log(songs);
-  console.log(songs.map(song => song.track_id));
-
-}
-
 db.create();
-
-testDb();
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
