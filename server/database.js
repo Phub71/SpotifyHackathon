@@ -4,7 +4,7 @@ const db = new sqlite3.Database(':memory:');
 function create() {
   db.serialize(function () {
     db.run("CREATE TABLE users (user_id TEXT, name TEXT)");
-    db.run("CREATE TABLE songs (user_id TEXT, track_id TEXT, happy_emotion int DEFAULT 0, sad_emotion int DEFAULT 0)");
+    db.run("CREATE TABLE songs (user_id TEXT, track_id TEXT, happy_emotion int DEFAULT 0, sad_emotion int DEFAULT 0, UNIQUE(track_id))");
     db.run("CREATE TABLE playlists (user_id TEXT, playlist_id TEXT)");
   });
 }

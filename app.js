@@ -55,8 +55,12 @@ spotifyApi.clientCredentialsGrant()
 app.post('/addSong', async function (request, response) {
   const userId = request.cookies.user_id;
   const {trackId} = request.body;
-  await db.addSong(userId, trackId);
-  response.send({});
+  try {
+    await db.addSong(userId, trackId);
+    response.send({});
+  } catch (ex) {
+    response.send({error: true});
+  }
   response.end();
 });
 
