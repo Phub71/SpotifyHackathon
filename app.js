@@ -72,8 +72,8 @@ app.get ('reactSad', async function (){
 app.get ('/listSongs', async function (request, response){
   let listSongs = await db.listSongs();
 
-  const users = await Promise.all(listSongs.map(song => spotifyApi.getUser(song.user_id))) ;
-  const tracks = await spotifyApi.getTracks(listSongs.map(song => song.track_id));
+  const users = await Promise.all(listSongs.map(async song => (await spotifyApi.getUser(song.user_id)).body));
+  const tracks = (await spotifyApi.getTracks(listSongs.map(song => song.track_id))).body.tracks;
   const result = {
     users, tracks
   };
@@ -163,8 +163,7 @@ app.get('/artist-top-tracks', function (request, response) {
 // We make these requests from client.js
 
 async function testDb() {
-  await db.addSong(10, 10);
-  await db.reactHappy(10,10);
+  await db.addSong('jy0brm5nucctbr6sp5v2mjc64', '3kpYJjvM8Ja6btr5hEJLWc');
   const songs = await db.listSongs();
   console.log(songs);
   console.log(songs.map(song => song.track_id));
