@@ -16,6 +16,7 @@ app.get("/", function (request, response) {
 app.use(bodyParser.json());
 app.use((req, resp, next) => {
   console.log("Request body:", req.body);
+  console.log("Cookies:", req.cookies);
   next();
 });
 
