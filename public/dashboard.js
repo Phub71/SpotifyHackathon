@@ -10,10 +10,12 @@ async function run() {
         <button class="track">${track.name}</button>
         <button class="happy">Love: ${emotions.happy}</button>
         <button class="sad">Cry: ${emotions.sad}</button>
+        <button class="remove">X</button>
     </li>`);
     trackName.find('.track').on('click', () => play(track.id));
     trackName.find('.happy').on('click', () => post('/reactHappy', {trackId: track.id, userId: user.id}));
     trackName.find('.sad').on('click', () => post('/reactSad', {trackId: track.id, userId: user.id}));
+    trackName.find('.remove').on('click', () => post('/removeSong', {trackId: track.id}));
     trackName.appendTo('#top-tracks-container');
   });
 }
