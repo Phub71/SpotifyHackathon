@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 require('dotenv').config();
-const {createDatabase, closeDatabase} = require('./server/database');
+const db = require('./server/database');
 
 // http://expressjs.com/en/starter/static-files.html
 app.use('/public', express.static('public'));
@@ -121,12 +121,20 @@ app.get('/artist-top-tracks', function (request, response) {
 //------------------------ WEB SERVER -------------------------//
 //-------------------------------------------------------------//
 
-createDatabase();
 
 // Listen for requests to our app
 // We make these requests from client.js
+
+async function testDb() {
+  db.create();
+  await db.addSong(10, 10);
+  await db.reactHappy(10,10);
+  console.log(await db.listSongs());
+  db.close();
+}
+
+testDb();
 var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
 
-closeDatabase();
