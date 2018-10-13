@@ -56,6 +56,7 @@ angular.module('spotifyApp')
                 play(item.track.id);
             };
 
+
             self.refresh();
         }
 
