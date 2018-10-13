@@ -63,7 +63,7 @@ export function play(uri) {
 function getCurrentTrackId() {
     if(currentState && currentState.track_window && currentState.track_window.current_track) {
         const track = currentState.track_window.current_track;
-        if(track.linked_from) return track.linked_from.id;
+        if(track.linked_from.id) return track.linked_from.id;
         return track.id;
     };
 }
