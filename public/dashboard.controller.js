@@ -64,7 +64,7 @@ angular.module('spotifyApp')
             };
 
             $scope.isTrackPlaying = function(item){
-                return isCurrentSong(item.track.id)
+                return isCurrentSong(item.track.id);
             };
 
             $scope.playStop = function(item){
