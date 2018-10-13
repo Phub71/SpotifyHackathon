@@ -10,7 +10,7 @@ const app = express();
 // http://expressjs.com/en/starter/static-files.html
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
-app.use('/', express.static(path.join(__dirname, 'views'),{index:false,extensions:['html']}));
+app.use('/', express.static(path.join(__dirname, 'views'), {index: false, extensions: ['html']}));
 app.get("/", function (request, response) {
   response.sendFile(__dirname + '/views/index.html');
 });
@@ -68,17 +68,15 @@ app.post('/removeSong', async function (request, response) {
   response.end();
 });
 
-app.post('reactHappy', async function (request, response) {
-  const userId = request.cookies.user_id;
-  const {trackId} = request.body;
+app.post('/reactHappy', async function (request, response) {
+  const {trackId, userId} = request.body;
   let reactHappy = await db.reactHappy(userId, trackId);
   response.send({});
   response.end();
 });
 
-app.post('reactSad', async function (request, response) {
-  const userId = request.cookies.user_id;
-  const {trackId} = request.body;
+app.post('/reactSad', async function (request, response) {
+  const {trackId, userId} = request.body;
   let reactSad = await db.reactSad(userId, trackId);
   response.send({});
   response.end();
@@ -90,9 +88,13 @@ app.get('/listSongs', async function (request, response) {
   const users = await Promise.all(userIds.map(async id => (await spotifyApi.getUser(id)).body));
   const tracks = (await spotifyApi.getTracks(listSongs.map(song => song.track_id))).body.tracks;
 
-  const result = listSongs.map(({user_id, track_id}) => ({
+  const result = listSongs.map(({user_id, track_id, happy_emotion, sad_emotion}) => ({
     track: tracks.find(track => track.id === track_id),
-    user: users.find(user => user.id === user_id)
+    user: users.find(user => user.id === user_id),
+    emotions: {
+      happy: happy_emotion,
+      sad: sad_emotion
+    }
   }));
   response.send(result);
   response.end();
