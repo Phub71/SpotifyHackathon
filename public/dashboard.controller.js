@@ -71,6 +71,7 @@ angular.module('spotifyApp')
                     $scope.loading = false;
                 });
             };
+            setInterval(self.refresh, 1000);
             $scope.get = function (url) {
                 return get(url).then((data)=> {
                     $timeout(1, ()=>$scope.apply());
