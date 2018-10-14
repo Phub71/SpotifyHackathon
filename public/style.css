@@ -1,8 +1,3 @@
-/* styles */
-/* called by your view template */
-
-/* You might want to try something fancier: */
-/* less: http://lesscss.org/ */
 
 * {
     box-sizing: border-box;
@@ -28,6 +23,10 @@ body {
 	width: 80%;
 	margin-left:auto;
 	margin-right:auto;
+}
+
+md-toolbar.md-default-theme:not(.md-menu-toolbar), md-toolbar:not(.md-menu-toolbar) {
+     background-color: white; 
 }
 
 h1{
@@ -75,7 +74,7 @@ header {
 
 footer{
 	width:100%;
-	float:left;
+	float:left;	
 	font-size: 16px;
 	color: rgba(20,20,20,.6);
 	text-align: center;

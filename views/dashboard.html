@@ -29,20 +29,40 @@
 
 <div ng-app="spotifyApp" ng-strict-di ng-controller="MainController as vm" ng-cloak layout="column" class="dashboard">
 
-    <md-toolbar class="md-warn" layout="row">
-        <div class="md-toolbar-tools">
+    <md-toolbar layout="row">
+        <div class="md-toolbar-tools" 
+        style="background: none;
+               padding:20px 0 0 20px;
+               margin:1.5em 0 0 1em;
+               width:60%;
+
+
+        ">
 
             <md-input-container>
-                <label>Song title</label>
                 <input name="message"
                        ng-model="newSong"
-                       placeholder="Seach for a song"
+                       placeholder="&#128269; Search"
                        ng-keyup="$event.keyCode == 13 ? searchForSong() : null"/>
             </md-input-container>
 
         </div>
+    </md-toolbar>
 
-        <section class="music-player">
+    <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
+
+    <md-content>
+        <md-list>
+            <md-list-item ng-repeat="item in newTracks" ng-click="postSong(item.id)">
+                <p>{{item.name}} - {{item['artists'][0]['name']}}</p>
+            </md-list-item>
+        </md-list>
+    </md-content>
+
+
+    <div class="wrapper1 clearfix">
+
+<section class="music-player">
 
             <main class="music-player--main">
                 <div class="music-player--progress">
@@ -64,24 +84,10 @@
                 </div>
             </main>
         </section>
-
-    </md-toolbar>
-
-    <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
-
-
-    <md-content>
-        <md-list>
-            <md-list-item ng-repeat="item in newTracks" ng-click="postSong(item.id)">
-                <p>{{item.name}}</p>
-            </md-list-item>
-        </md-list>
-    </md-content>
-
-    <div class="wrapper1 clearfix">
         <aside class="note-wrap" ng-style="{'background': getBackground()}"
                ng-repeat="item in tracks">
             <div layout="row" layout-align="start center" flex>
+
                 <img class="user-image" ng-src="/public/svg/account.svg" ng-if="!item.user.images[0].url">
                 <img class="user-image" ng-src="{{item.user.images[0].url}}" ng-if="item.user.images[0].url">
                 <span class="user-name">{{item.user.display_name}}</span>
@@ -89,7 +95,6 @@
                 <img ng-src="https://media.giphy.com/media/vybWlRniCXzZC/giphy.gif" class="player-gif" ng-if="isTrackPlaying(item)">
 
             </div>
-
             <div class="content">
                 <img ng-src="{{item.track.album.images[0]['url']}}" class="album-image">
 
