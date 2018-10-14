@@ -49,8 +49,8 @@ function filterSongs(songs) {
 }
 
 angular.module('spotifyApp')
-    .controller('MainController', ['$timeout', '$scope',
-        function ($timeout, $scope) {
+    .controller('MainController', ['$timeout', '$scope', '$mdToast',
+        function ($timeout, $scope, $mdToast) {
             var self = this;
             self.backgroundColors = ["#19d06ea0", "#c1d019a0", "#d01919a0", "#19d03ca0", "rgba(250, 66, 167, 0.8)", "#ab0c0cc6", "#0cab8e96", "#9cf3e396", "#ea9cf396"];
             $scope.isPlaying = false;
@@ -88,8 +88,8 @@ angular.module('spotifyApp')
             };
 
             $scope.findTracks = function () {
-              splash();
-              $scope.loading = true;
+                splash();
+                $scope.loading = true;
                 $scope.post('search-track', {name: $scope.newSong}).then(function (res) {
                     $scope.newTracks = res;
                     $scope.loading = false;
@@ -107,7 +107,7 @@ angular.module('spotifyApp')
             };
 
             $scope.happy = function (item) {
-              splash();
+                splash();
                 post('/reactHappy', {userId: item.user.id, trackId: item.track.id}).then(
                     function () {
                         self.refresh();
@@ -116,8 +116,8 @@ angular.module('spotifyApp')
             };
 
             $scope.sad = function (item) {
-              splash();
-              post('/reactSad', {userId: item.user.id, trackId: item.track.id}).then(
+                splash();
+                post('/reactSad', {userId: item.user.id, trackId: item.track.id}).then(
                     function () {
                         self.refresh();
                     }
@@ -129,8 +129,8 @@ angular.module('spotifyApp')
             };
 
             $scope.playStop = function (item) {
-              splash();
-              if (item) {
+                splash();
+                if (item) {
                     if ($scope.isTrackPlaying(item)) {
                         $scope.pause(item);
                     } else {
@@ -163,6 +163,19 @@ angular.module('spotifyApp')
                     $scope.isPlaying = false;
                     pause(item.track.id);
                 }
+            };
+
+            $scope.newPlaylist = function () {
+                post('/createPlaylist').then(
+                    function () {
+                        $mdToast.show(
+                            $mdToast.simple()
+                                .textContent('Check your library now!')
+                                .position('top right')
+                                .hideDelay(1000)
+                        );
+                    }
+                );
             };
 
             $scope.audio_features = function (item) {

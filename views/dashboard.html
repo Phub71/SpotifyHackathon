@@ -29,12 +29,12 @@
 
 <div ng-app="spotifyApp" ng-strict-di ng-controller="MainController as vm" ng-cloak layout="column" class="dashboard">
 
-    <md-toolbar layout="row" style="background: none">
+    <md-toolbar layout="row" style="background: none;padding: 0 12px;" flex layout-align="space-between center" id="toolbar">
         <div class="md-toolbar-tools"
              style="background: none !important;
                padding:20px 0 0 20px;
                margin:1.5em 0 0 1em;
-               width:60%;">
+               width: 200px;">
 
             <md-input-container>
                 <input name="message"
@@ -65,17 +65,23 @@
                 </div>
             </main>
         </section>
+
+        <md-button ng-click="newPlaylist()" class="generate-button" ng-if="tracks.length">
+            <md-tooltip md-direction="left">Get this playlist!</md-tooltip>
+            Export playlist
+        </md-button>
+
     </md-toolbar>
 
-<div class="list_wrap">
-    <md-content>
-        <md-list>
-            <md-list-item ng-repeat="item in newTracks" ng-click="postSong(item.id)">
-                <p>{{item.name}} - {{item['artists'][0]['name']}}</p>
-            </md-list-item>
-        </md-list>
-    </md-content>
-</div> <!-- END LIST_WRAP -->
+    <div class="list_wrap">
+        <md-content>
+            <md-list>
+                <md-list-item ng-repeat="item in newTracks" ng-click="postSong(item.id)">
+                    <p>{{item.name}} - {{item['artists'][0]['name']}}</p>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </div> <!-- END LIST_WRAP -->
 
     <div class="wrapper1 clearfix">
         <aside class="note-wrap" ng-style="item.style"

@@ -124,6 +124,40 @@
     padding: 0;
 }
 
+.generate-button {
+    background-color: #1db954;
+    text-transform: none;
+    font-weight: 700;
+    border-radius: 7px;
+    height: 54px;
+    padding: 0 16px;
+}
+
+.generate-button:active,
+.generate-button:hover {
+    background-color: #1ed760 !important;
+}
+
+.generate-button:disabled{
+    background-color: #fafafa !important;
+}
+
+md-toast{
+    width: 220px !important;
+    min-width: 220px !important;
+    /*position: absolute;*/
+    /*top: 80px;*/
+    /*right: 100px;*/
+    /*left: unset;*/
+    height: 60px;
+}
+
+md-toast.md-default-theme .md-toast-content, md-toast .md-toast-content{
+    background-color: #1ed760 !important;
+    width: 220px !important;
+    min-width: 220px !important;
+}
+
 md-list{
   padding:0;
 }
