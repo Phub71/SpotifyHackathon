@@ -5,11 +5,22 @@ angular.module('spotifyApp')
     .controller('MainController', ['$timeout', '$scope',
         function ($timeout, $scope) {
             var self = this;
-            self.backgroundColors = ["#19d06e70", "#c1d01970", "#d0191970", "#19d03c70", "#2910101c"];
+            self.backgroundColors = ["#19d06e70", "#c1d01970", "#d0191970", "#19d03c70", "#2910101c", "#ab0c0c66", "#0cab8e66", "#9cf3e366", "#ea9cf366"];
 
             self.refresh = function () {
                 $scope.loading = true;
                 $scope.get('/listSongs').then(function (res) {
+                    angular.forEach(res, function(value){
+                        var randomNumber = Math.floor(Math.random() * 10) + 1 ;
+                        value['style'] = {
+                            'background': self.backgroundColors[Math.floor(Math.random() * self.backgroundColors.length)],
+                            '-webkit-transform': 'rotate(' + randomNumber +'deg)',
+                            '-moz-transform': 'rotate(' + randomNumber +'deg)',
+                            '-o-transform': 'rotate(' + randomNumber +'deg)',
+                            '-ms-transform': 'rotate(' + randomNumber +'deg)',
+                            'transform': 'rotate(' + randomNumber +'deg)',
+                        }
+                    });
                     $scope.tracks = res;
                     $scope.loading = false;
                 });
@@ -82,16 +93,6 @@ angular.module('spotifyApp')
 
             $scope.pause = function (item) {
                 pause(item.track.id);
-            };
-
-            $scope.getBackground = function () {
-                return 'rgba(0,0,0,0,8)';
-                /*-webkit-transform: rotate(2deg);*/
-                /*-moz-transform: rotate(2deg);*/
-                /*-o-transform: rotate(2deg);*/
-                /*-ms-transform: rotate(2deg);*/
-                /*transform: rotate(2deg);*/
-                // return self.backgroundColors[Math.floor(Math.random() * self.backgroundColors.length)];
             };
 
             self.refresh();

@@ -78,7 +78,7 @@
     </md-content>
 
     <div class="wrapper1 clearfix">
-        <aside class="note-wrap" ng-style="{'background': getBackground()}"
+        <aside class="note-wrap" ng-style="item.style"
                ng-repeat="item in tracks">
             <div layout="row" layout-align="start center" flex>
                 <img class="user-image" ng-src="/public/svg/account.svg" ng-if="!item.user.images[0].url">
