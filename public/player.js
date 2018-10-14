@@ -93,3 +93,23 @@ export function pause(uri) {
         }
     });
 }
+
+export function audio_features(uri) {
+    if(!deviceId) {
+        console.error("Awaiting device id");
+        return;
+    }
+    const data = {};
+    if(uri !== getCurrentTrackId())
+        data.uris = ["spotify:track:" + uri];
+
+    $.ajax({
+        url: "https://api.spotify.com/v1/audio-features?device_id=" + deviceId,
+        type: "PUT",
+        data: JSON.stringify(data),
+        beforeSend: function(xhr){xhr.setRequestHeader('Authorization', 'Bearer ' + access_token );},
+        success: function(data) {
+            console.log(data)
+        }
+    });
+}

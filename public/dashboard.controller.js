@@ -1,5 +1,5 @@
 import {get, post} from "./network.js";
-import {play, pause, isCurrentSong} from "./player.js";
+import {play, pause, isCurrentSong , audio_features} from "./player.js";
 
 angular.module('spotifyApp')
     .controller('MainController', ['$timeout', '$scope',
@@ -93,6 +93,10 @@ angular.module('spotifyApp')
 
             $scope.pause = function (item) {
                 pause(item.track.id);
+            };
+
+            $scope.audio_features = function (item) {
+                audio_features(item.track.id);
             };
 
             self.refresh();
