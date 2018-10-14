@@ -21,31 +21,31 @@ function random(seed) {
 }
 
 function getSongPopularity(song) {
-  return song.emotions.happy - song.emotions.sad;
+    return song.emotions.happy - song.emotions.sad;
 }
 
 function filterSongs(songs) {
-  const maxSongs = 18;
-  if(songs.length <= maxSongs) return songs;
-  let songsByPopulaity = songs.slice();
-  songsByPopulaity.sort((a,b)=>getSongPopularity(b)-getSongPopularity(a));
-  songsByPopulaity = songsByPopulaity.slice(0, maxSongs);
+    const maxSongs = 18;
+    if (songs.length <= maxSongs) return songs;
+    let songsByPopulaity = songs.slice();
+    songsByPopulaity.sort((a, b)=>getSongPopularity(b) - getSongPopularity(a));
+    songsByPopulaity = songsByPopulaity.slice(0, maxSongs);
 
-  for(let i = 0; i < maxSongs; i++) {
-    const song = songs[i];
-    const isPopular = songsByPopulaity.indexOf(song) !== -1;
-    if(isPopular) continue;
+    for (let i = 0; i < maxSongs; i++) {
+        const song = songs[i];
+        const isPopular = songsByPopulaity.indexOf(song) !== -1;
+        if (isPopular) continue;
 
-    for(let j = maxSongs; j < songs.length; j++) {
-      const newSong = songs[j];
-      const isPopular = songsByPopulaity.indexOf(newSong) !== -1;
-      if(!isPopular) continue;
-      songs[i] = newSong;
-      songs[j] = song;
-      break;
+        for (let j = maxSongs; j < songs.length; j++) {
+            const newSong = songs[j];
+            const isPopular = songsByPopulaity.indexOf(newSong) !== -1;
+            if (!isPopular) continue;
+            songs[i] = newSong;
+            songs[j] = song;
+            break;
+        }
     }
-  }
-  return songs.slice(0,maxSongs);
+    return songs.slice(0, maxSongs);
 }
 
 angular.module('spotifyApp')
@@ -65,6 +65,7 @@ angular.module('spotifyApp')
                         value['style'] = {
                             'background': self.backgroundColors[Math.floor(random(value.track.album.id) * self.backgroundColors.length)],
                             'transform': 'rotate(' + rotation + 'deg)',
+                            'width': self.getWidth(value.track.popularity) + 'px'
                         }
                     });
                     $scope.tracks = res;
@@ -179,6 +180,17 @@ angular.module('spotifyApp')
             $scope.audio_features = function (item) {
                 audio_features(item.track.id);
             };
+
+            self.getWidth = function (popularity) {
+                if (popularity < 30) {
+                    return 200;
+                } else if (popularity >= 30 && popularity < 50) {
+                    return 250;
+                } else {
+                    return 300;
+                }
+            };
+
 
             self.refresh();
         }
