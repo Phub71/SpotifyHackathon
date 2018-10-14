@@ -29,9 +29,9 @@
 
 <div ng-app="spotifyApp" ng-strict-di ng-controller="MainController as vm" ng-cloak layout="column" class="dashboard">
 
-    <md-toolbar layout="row">
+    <md-toolbar layout="row" style="background: none">
         <div class="md-toolbar-tools"
-             style="background: none;
+             style="background: none !important;
                padding:20px 0 0 20px;
                margin:1.5em 0 0 1em;
                width:60%;">
@@ -89,26 +89,24 @@
 
                 <p class="song-title">{{item.track.name | limitTo: 20}}</p>
                 <p class="artist">{{item.track.artists[0]['name']}}</p>
+            </div>
 
-                <div layout="row" layout-align="end center" flex>
+            <div layout="row" flex layout-align="space-between center">
 
-                    <div layout="row" layout-align="end center">
-                        <md-button ng-click="happy(item)" aria-label="happy" class="action-button">
-                            <md-icon md-svg-icon="/public/svg/happy.svg">{{item.emotions.happy}}</md-icon>
-                            <span>{{item.emotions.happy}}</span>
-                        </md-button>
+                <md-button ng-click="happy(item)" aria-label="happy" class="action-button">
+                    <md-icon md-svg-icon="/public/svg/happy.svg">{{item.emotions.happy}}</md-icon>
+                    <span>{{item.emotions.happy}}</span>
+                </md-button>
 
-                        <md-button ng-click="sad(item)" aria-label="sad" class="action-button">
-                            <md-icon md-svg-icon="/public/svg/sad.svg">{{item.emotions.happy}}</md-icon>
-                            <span>{{item.emotions.sad}}</span>
-                        </md-button>
+                <md-button ng-click="sad(item)" aria-label="sad" class="action-button">
+                    <md-icon md-svg-icon="/public/svg/sad.svg">{{item.emotions.happy}}</md-icon>
+                    <span>{{item.emotions.sad}}</span>
+                </md-button>
 
-                        <md-button ng-click="playStop(item)" aria-label="playStop" class="action-button">
-                            <md-icon md-svg-icon="/public/svg/play.svg" ng-if="!isTrackPlaying(item)"></md-icon>
-                            <md-icon md-svg-icon="/public/svg/pause.svg" ng-if="isTrackPlaying(item)"></md-icon>
-                        </md-button>
-                    </div>
-                </div>
+                <md-button ng-click="playStop(item)" aria-label="playStop" class="action-button">
+                    <md-icon md-svg-icon="/public/svg/play.svg" ng-if="!isTrackPlaying(item)"></md-icon>
+                    <md-icon md-svg-icon="/public/svg/pause.svg" ng-if="isTrackPlaying(item)"></md-icon>
+                </md-button>
             </div>
 
         </aside>
