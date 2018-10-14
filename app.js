@@ -104,8 +104,8 @@ app.post('/createPlaylist', async function (request, response) {
     clientSecret: process.env.CLIENT_SECRET
   });
   spotifyApi.setAccessToken(access_token);
-  const date = new Date();
-  const playlist = (await spotifyApi.createPlaylist(user_id, "Splashify " + date.getUTCDate())).body;
+  const description = "This is an auto generated playlist from your Splash Music session.";
+  const playlist = (await spotifyApi.createPlaylist(user_id, "Your Splashed Art!", {'description' : description})).body;
 
   let songs = await db.listSongs();
   songs.sort((a, b) => b.happy_emotion - a.sad_emotion);
