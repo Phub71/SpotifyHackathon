@@ -46,12 +46,8 @@ function init(app) {
     // your application requests authorization
     const scopes = [
         'streaming',
-        'user-read-birthdate',
-        'user-read-email',
-        'user-read-private',
         'user-modify-playback-state',
         'playlist-modify-public',
-        'playlist-modify-private'
     ];
     res.redirect('https://accounts.spotify.com/authorize?' +
       querystring.stringify({
