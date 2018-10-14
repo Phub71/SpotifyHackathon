@@ -24,7 +24,7 @@ angular.module('spotifyApp')
     .controller('MainController', ['$timeout', '$scope',
         function ($timeout, $scope) {
             var self = this;
-            self.backgroundColors = ["#19d06e70", "#c1d01970", "#d0191970", "#19d03c70", "#2910101c", "#ab0c0c66", "#0cab8e66", "#9cf3e366", "#ea9cf366"];
+            self.backgroundColors = ["#19d06ea0", "#c1d019a0", "#d01919a0", "#19d03ca0", "#291010bc", "#ab0c0cc6", "#0cab8e96", "#9cf3e396", "#ea9cf396"];
             $scope.isPlaying = false;
             $scope.lastActiveTrack = null;
 
