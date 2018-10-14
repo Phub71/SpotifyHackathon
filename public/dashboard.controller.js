@@ -1,6 +1,24 @@
 import {get, post} from "./network.js";
 import {play, pause, isCurrentSong , audio_features} from "./player.js";
 
+function hashCode(str) {
+    str = str + "";
+  var hash = 0, i, chr;
+  if (str.length === 0) return hash;
+  for (i = 0; i < str.length; i++) {
+    chr   = str.charCodeAt(i);
+    hash  = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+};
+
+function random(seed) {
+  seed = hashCode(seed);
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
 angular.module('spotifyApp')
     .controller('MainController', ['$timeout', '$scope',
         function ($timeout, $scope) {
@@ -12,15 +30,11 @@ angular.module('spotifyApp')
             self.refresh = function () {
                 $scope.loading = true;
                 $scope.get('/listSongs').then(function (res) {
-                    angular.forEach(res, function (value) {
-                        var randomNumber = Math.floor(Math.random() * 10) + 1;
+                    angular.forEach(res, function(value){
+                        const rotation = (random(value.track.id)-.5)* 20;
                         value['style'] = {
-                            'background': self.backgroundColors[Math.floor(Math.random() * self.backgroundColors.length)],
-                            '-webkit-transform': 'rotate(' + randomNumber + 'deg)',
-                            '-moz-transform': 'rotate(' + randomNumber + 'deg)',
-                            '-o-transform': 'rotate(' + randomNumber + 'deg)',
-                            '-ms-transform': 'rotate(' + randomNumber + 'deg)',
-                            'transform': 'rotate(' + randomNumber + 'deg)',
+                            'background': self.backgroundColors[Math.floor(rotation * self.backgroundColors.length)],
+                            'transform': 'rotate(' + rotation +'deg)',
                         }
                     });
                     $scope.tracks = res;
