@@ -44,7 +44,6 @@
 
     <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
 
-
     <md-content>
         <md-list>
             <md-list-item ng-repeat="item in newTracks" ng-click="postSong(item.id)">
@@ -60,9 +59,6 @@
                 <img class="user-image" ng-src="/public/svg/account.svg" ng-if="!item.user.images[0].url">
                 <img class="user-image" ng-src="{{item.user.images[0].url}}" ng-if="item.user.images[0].url">
                 <span class="user-name">{{item.user.display_name}}</span>
-
-                <img ng-src="https://media.giphy.com/media/vybWlRniCXzZC/giphy.gif" class="player-gif" ng-if="isTrackPlaying(item)">
-
             </div>
 
             <div class="content">
@@ -74,17 +70,17 @@
                 <div layout="row" layout-align="end center" flex>
 
                     <div layout="row" layout-align="end center">
-                        <md-button ng-click="happy(item)" aria-label="happy">
+                        <md-button ng-click="happy(item)" aria-label="happy" class="action-button">
                             <md-icon md-svg-icon="/public/svg/happy.svg">{{item.emotions.happy}}</md-icon>
                             <span>{{item.emotions.happy}}</span>
                         </md-button>
 
-                        <md-button ng-click="sad(item)" aria-label="sad">
+                        <md-button ng-click="sad(item)" aria-label="sad" class="action-button">
                             <md-icon md-svg-icon="/public/svg/sad.svg">{{item.emotions.happy}}</md-icon>
                             <span>{{item.emotions.sad}}</span>
                         </md-button>
 
-                        <md-button ng-click="playStop(item)" aria-label="playStop">
+                        <md-button ng-click="playStop(item)" aria-label="playStop" class="action-button">
                             <md-icon md-svg-icon="/public/svg/play.svg" ng-if="!isTrackPlaying(item)"></md-icon>
                             <md-icon md-svg-icon="/public/svg/pause.svg" ng-if="isTrackPlaying(item)"></md-icon>
                         </md-button>
