@@ -107,7 +107,9 @@ app.post('/createPlaylist', async function (request, response) {
   const date = new Date();
   const playlist = (await spotifyApi.createPlaylist(user_id, "Splashify " + date.getUTCDate())).body;
 
-  const songs = await db.listSongs();
+  let songs = await db.listSongs();
+  songs.sort((a, b) => b.happy_emotion - a.sad_emotion);
+  songs = songs.slice(0, 18);
   const trackIds = songs.map(song => "spotify:track:" + song.track_id);
   await spotifyApi.addTracksToPlaylist(playlist.id, trackIds);
 
@@ -119,32 +121,32 @@ const trackCache = {};
 const userCache = {};
 
 async function fetchTracks(ids) {
-  if(ids.length === 0) return [];
+  if (ids.length === 0) return [];
   const pendingIds = [];
-  for(let id of ids) {
-    if(trackCache[id]) continue;
+  for (let id of ids) {
+    if (trackCache[id]) continue;
     pendingIds.push(id);
   }
-  const newTracks = pendingIds.length === 0 ? [] :(await spotifyApi.getTracks(pendingIds)).body.tracks;
-  for(let track of newTracks) {
+  const newTracks = pendingIds.length === 0 ? [] : (await spotifyApi.getTracks(pendingIds)).body.tracks;
+  for (let track of newTracks) {
     trackCache[track.id] = track;
   }
-  return ids.map(id=>trackCache[id]);
+  return ids.map(id => trackCache[id]);
 }
 
 async function fetchUsers(ids) {
-  if(ids.length === 0) return [];
+  if (ids.length === 0) return [];
 
   const pendingIds = [];
-  for(let id of ids) {
-    if(userCache[id]) continue;
+  for (let id of ids) {
+    if (userCache[id]) continue;
     pendingIds.push(id);
   }
   const newUsers = await Promise.all(pendingIds.map(async id => (await spotifyApi.getUser(id)).body));
-  for(let user of newUsers) {
+  for (let user of newUsers) {
     userCache[user.id] = user;
   }
-  return ids.map(id=>userCache[id]);
+  return ids.map(id => userCache[id]);
 }
 
 app.get('/listSongs', handleError(async function (request, response) {
@@ -152,7 +154,7 @@ app.get('/listSongs', handleError(async function (request, response) {
   const userIds = Array.from(new Set(listSongs.map(song => song.user_id)));
   const users = await fetchUsers(userIds);
   const trackIds = listSongs.map(song => song.track_id);
-  const tracks =  await fetchTracks(trackIds);
+  const tracks = await fetchTracks(trackIds);
 
   const result = listSongs.map(({user_id, track_id, happy_emotion, sad_emotion}) => ({
     track: tracks.find(track => track.id === track_id),
