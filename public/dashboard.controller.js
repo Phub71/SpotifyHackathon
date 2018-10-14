@@ -62,10 +62,14 @@ angular.module('spotifyApp')
                     res = filterSongs(res);
                     angular.forEach(res, function (value) {
                         const rotation = (random(value.track.id) - .5) * 20;
+                        var range = (value.emotions.happy - value.emotions.sad)
+                        if (range < 0) {
+                            range = 0;
+                        }
                         value['style'] = {
                             'background': self.backgroundColors[Math.floor(random(value.track.album.id) * self.backgroundColors.length)],
                             'transform': 'rotate(' + rotation + 'deg)',
-                            'width': self.getWidth(value.track.popularity) + 'px'
+                            'width': self.getWidth(range) + 'px'
                         }
                     });
                     $scope.tracks = res;
@@ -117,7 +121,7 @@ angular.module('spotifyApp')
             };
 
             $scope.sad = function (item) {
-              splash(item.track);
+                splash(item.track);
                 post('/reactSad', {userId: item.user.id, trackId: item.track.id}).then(
                     function () {
                         self.refresh();
@@ -148,9 +152,9 @@ angular.module('spotifyApp')
             };
 
             $scope.play = function (item) {
-              if (item && item.track) {
-                for(let i = 0; i < 5; i++) splash();
-                $scope.lastActiveTrack = item;
+                if (item && item.track) {
+                    for (let i = 0; i < 5; i++) splash();
+                    $scope.lastActiveTrack = item;
                     $scope.isPlaying = true;
                     play(item.track.id);
                 }
@@ -159,8 +163,8 @@ angular.module('spotifyApp')
 
             $scope.pause = function (item) {
                 if (item && item.track) {
-                  splash(item.track);
-                  $scope.isPlaying = false;
+                    splash(item.track);
+                    $scope.isPlaying = false;
                     pause(item.track.id);
                 }
             };
@@ -168,7 +172,7 @@ angular.module('spotifyApp')
             $scope.newPlaylist = function () {
                 post('/createPlaylist').then(
                     function () {
-                        for(let i = 0; i < 25; i++) splash();
+                        for (let i = 0; i < 25; i++) splash();
                         $mdToast.show(
                             $mdToast.simple()
                                 .textContent('Check your library now!')
@@ -184,15 +188,18 @@ angular.module('spotifyApp')
             };
 
             self.getWidth = function (popularity) {
-                if (popularity < 30) {
+                if (popularity < 3) {
                     return 200;
-                } else if (popularity >= 30 && popularity < 50) {
+                } else if (popularity >= 3 && popularity < 6) {
                     return 250;
-                } else {
+                } else if (popularity >= 6 && popularity < 9) {
                     return 300;
+                } else if (popularity >= 9 && popularity < 12) {
+                    return 350;
+                } else {
+                    return 400;
                 }
             };
-
 
             self.refresh();
         }
