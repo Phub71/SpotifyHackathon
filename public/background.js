@@ -20,4 +20,6 @@ function createSplash() {
   return container.replace('{splash}', splashes[0]);
 }
 
-setInterval(splash, 10000);
+for(let i = 0; i < 10; i++){
+  splash();
+}

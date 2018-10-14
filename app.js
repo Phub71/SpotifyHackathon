@@ -139,6 +139,13 @@ app.post('/search-track', handleError(async function (request, response) {
   response.end();
 }));
 
+app.post('/track-analysis', handleError(async function (request, response) {
+  const {trackId} = request.body;
+  const data = await spotifyApi.getAudioAnalysisForTrack('track:' + trackId);
+  response.send(data.body.tracks.items);
+  response.end();
+}));
+
 //-------------------------------------------------------------//
 //------------------------ WEB SERVER -------------------------//
 //-------------------------------------------------------------//
