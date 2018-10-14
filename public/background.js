@@ -6,8 +6,8 @@ export function splash({
                        } = {}) {
   const el = $(createSplash());
   const img = el.find('img');
-  const x = window.innerHeight * Math.random();
-  const y = window.innerHeight * Math.random();
+  const x = window.innerHeight * Math.random() * 1.5;
+  const y = window.innerHeight * Math.random() * 0.7;
   const rot = Math.random() * 360;
 
   el.css({transform: `translate(${x}px, ${y}px) rotate(${rot}deg)`});
