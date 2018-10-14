@@ -6,19 +6,21 @@ angular.module('spotifyApp')
         function ($timeout, $scope) {
             var self = this;
             self.backgroundColors = ["#19d06e70", "#c1d01970", "#d0191970", "#19d03c70", "#2910101c", "#ab0c0c66", "#0cab8e66", "#9cf3e366", "#ea9cf366"];
+            $scope.activeSongTitle = "";
+            $scope.activeSongArtist = "";
 
             self.refresh = function () {
                 $scope.loading = true;
                 $scope.get('/listSongs').then(function (res) {
-                    angular.forEach(res, function(value){
-                        var randomNumber = Math.floor(Math.random() * 10) + 1 ;
+                    angular.forEach(res, function (value) {
+                        var randomNumber = Math.floor(Math.random() * 10) + 1;
                         value['style'] = {
                             'background': self.backgroundColors[Math.floor(Math.random() * self.backgroundColors.length)],
-                            '-webkit-transform': 'rotate(' + randomNumber +'deg)',
-                            '-moz-transform': 'rotate(' + randomNumber +'deg)',
-                            '-o-transform': 'rotate(' + randomNumber +'deg)',
-                            '-ms-transform': 'rotate(' + randomNumber +'deg)',
-                            'transform': 'rotate(' + randomNumber +'deg)',
+                            '-webkit-transform': 'rotate(' + randomNumber + 'deg)',
+                            '-moz-transform': 'rotate(' + randomNumber + 'deg)',
+                            '-o-transform': 'rotate(' + randomNumber + 'deg)',
+                            '-ms-transform': 'rotate(' + randomNumber + 'deg)',
+                            'transform': 'rotate(' + randomNumber + 'deg)',
                         }
                     });
                     $scope.tracks = res;
@@ -88,11 +90,22 @@ angular.module('spotifyApp')
             };
 
             $scope.play = function (item) {
-                play(item.track.id);
+                if (item && item.track) {
+                    play(item.track.id);
+                    $scope.activeSongTitle = item.track.name;
+                    if (item.track.hasOwnProperty('artists') && angular.isArray(item.track.artists) && item.track.artists.length > 0) {
+                        $scope.activeSongArtist = item.track.artists[0]['name'];
+                    }
+                }
+
             };
 
             $scope.pause = function (item) {
-                pause(item.track.id);
+                if (item && item.track) {
+                    pause(item.track.id);
+                    $scope.activeSongTitle = "";
+                    $scope.activeSongArtist = "";
+                }
             };
 
             $scope.audio_features = function (item) {
