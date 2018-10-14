@@ -30,14 +30,11 @@
 <div ng-app="spotifyApp" ng-strict-di ng-controller="MainController as vm" ng-cloak layout="column" class="dashboard">
 
     <md-toolbar layout="row">
-        <div class="md-toolbar-tools" 
-        style="background: none;
+        <div class="md-toolbar-tools"
+             style="background: none;
                padding:20px 0 0 20px;
                margin:1.5em 0 0 1em;
-               width:60%;
-
-
-        ">
+               width:60%;">
 
             <md-input-container>
                 <input name="message"
@@ -47,9 +44,28 @@
             </md-input-container>
 
         </div>
-    </md-toolbar>
 
-    <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
+        <section class="music-player">
+
+            <main class="music-player--main">
+                <div class="music-player--progress">
+                    <div class="progress--time"></div>
+                    <div class="progress--time progress--time__end"></div>
+                </div>
+                <div class="music-player--controls">
+                    <md-button ng-click="playerButton()" aria-label="playStop" class="action-button">
+                        <md-icon md-svg-icon="/public/svg/play.svg" ng-if="!isPlaying" class="player-button"></md-icon>
+                        <md-icon md-svg-icon="/public/svg/pause.svg" ng-if="isPlaying" class="player-button"></md-icon>
+                    </md-button>
+                    <div class="song-info">
+                        <div class="song-info--title">{{lastActiveTrack.track.name | limitTo:12}}</div>
+                        <div class="song-info--artist">{{lastActiveTrack.track['artists'][0]['name'] | limitTo:12}}
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </section>
+    </md-toolbar>
 
     <md-content>
         <md-list>
@@ -58,34 +74,6 @@
             </md-list-item>
         </md-list>
     </md-content>
-
-
-    <div class="wrapper1 clearfix">
-
-<section class="music-player">
-
-            <main class="music-player--main">
-                <div class="music-player--progress">
-                    <div class="progress--time"></div>
-                    <div class="progress--time progress--time__end"></div>
-                </div>
-                <div class="music-player--controls">
-                    <md-button ng-click="playStop()" aria-label="playStop" class="action-button">
-                        <md-icon md-svg-icon="/public/svg/play.svg" ng-if="!activeSongId" class="player-button"></md-icon>
-                        <md-icon md-svg-icon="/public/svg/pause.svg" ng-if="activeSongId" class="player-button"></md-icon>
-                    </md-button>
-                    <div class="song-info">
-                        <div class="song-info--title">{{activeSongTitle | limitTo:12}}</div>
-                        <div class="song-info--artist">{{activeSongArtist | limitTo:12}}</div>
-                    </div>
-                </div>
-            </main>
-        </section>
-        <aside class="" ng-style="{'background': getBackground()}"
-
-    </md-toolbar>
-
-    <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
 
     <div class="wrapper1 clearfix">
         <aside class="note-wrap" ng-style="item.style"
