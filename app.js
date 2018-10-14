@@ -128,7 +128,9 @@ async function fetchTracks(ids) {
     pendingIds.push(id);
   }
   const newTracks = pendingIds.length === 0 ? [] : (await spotifyApi.getTracks(pendingIds)).body.tracks;
+  const audioFeatures = pendingIds.length === 0 ? [] : (await spotifyApi.getAudioFeaturesForTracks(pendingIds)).body.audio_features;
   for (let track of newTracks) {
+    track.features = audioFeatures.find(feature => feature.id === track.id);
     trackCache[track.id] = track;
   }
   return ids.map(id => trackCache[id]);

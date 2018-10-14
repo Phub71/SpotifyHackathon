@@ -90,7 +90,6 @@ angular.module('spotifyApp')
             };
 
             $scope.findTracks = function () {
-                splash();
                 $scope.loading = true;
                 $scope.post('search-track', {name: $scope.newSong}).then(function (res) {
                     $scope.newTracks = res;
@@ -109,7 +108,7 @@ angular.module('spotifyApp')
             };
 
             $scope.happy = function (item) {
-                splash();
+                splash(item.track);
                 post('/reactHappy', {userId: item.user.id, trackId: item.track.id}).then(
                     function () {
                         self.refresh();
@@ -118,7 +117,7 @@ angular.module('spotifyApp')
             };
 
             $scope.sad = function (item) {
-                splash();
+              splash(item.track);
                 post('/reactSad', {userId: item.user.id, trackId: item.track.id}).then(
                     function () {
                         self.refresh();
@@ -149,8 +148,9 @@ angular.module('spotifyApp')
             };
 
             $scope.play = function (item) {
-                if (item && item.track) {
-                    $scope.lastActiveTrack = item;
+              if (item && item.track) {
+                for(let i = 0; i < 5; i++) splash();
+                $scope.lastActiveTrack = item;
                     $scope.isPlaying = true;
                     play(item.track.id);
                 }
@@ -159,7 +159,8 @@ angular.module('spotifyApp')
 
             $scope.pause = function (item) {
                 if (item && item.track) {
-                    $scope.isPlaying = false;
+                  splash(item.track);
+                  $scope.isPlaying = false;
                     pause(item.track.id);
                 }
             };
@@ -167,6 +168,7 @@ angular.module('spotifyApp')
             $scope.newPlaylist = function () {
                 post('/createPlaylist').then(
                     function () {
+                        for(let i = 0; i < 25; i++) splash();
                         $mdToast.show(
                             $mdToast.simple()
                                 .textContent('Check your library now!')
