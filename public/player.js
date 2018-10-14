@@ -76,7 +76,7 @@ function getCurrentTrackId() {
 
 export function getBrightness() {
     if(curentAnalysis) {
-        return (currentState.energy + currentState.danceability + currentState.valence) / 3;
+        return (curentAnalysis.energy + curentAnalysis.danceability + curentAnalysis.valence) / 3;
     }
     return .5;
 }
