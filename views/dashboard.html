@@ -67,6 +67,7 @@
         </section>
     </md-toolbar>
 
+<div class="list_wrap">
     <md-content>
         <md-list>
             <md-list-item ng-repeat="item in newTracks" ng-click="postSong(item.id)">
@@ -74,6 +75,7 @@
             </md-list-item>
         </md-list>
     </md-content>
+</div> <!-- END LIST_WRAP -->
 
     <div class="wrapper1 clearfix">
         <aside class="note-wrap" ng-style="item.style"

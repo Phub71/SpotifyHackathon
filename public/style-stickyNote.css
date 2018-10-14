@@ -124,11 +124,17 @@
     padding: 0;
 }
 
+md-list{
+  padding:0;
+}
+
 md-content{
+  position: absolute;
   font-size:14px;
-  background:white;
+  background:white !important;
   width:30%;
   margin-left:2em;
+  z-index: 100;
 }
 
 md-input-container.md-default-theme .md-input, md-input-container .md-input:enabled,
@@ -149,4 +155,9 @@ label{
 
 md-progress-linear{
   display:none !important;
+}
+
+
+.wrap_list{
+  position: relative;
 }
