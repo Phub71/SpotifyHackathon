@@ -20,7 +20,7 @@ function listSongs() {
 
 function getLeastPopularSongHappiness() {
   return new Promise((resolve, reject) => {
-    db.all(`SELECT happy_emotion - sad_emotion as score FROM songs ORDER BY score DESC LIMIT 1 OFFSET 5;`,
+    db.all(`SELECT happy_emotion - sad_emotion as score FROM songs ORDER BY score DESC LIMIT 1 OFFSET 17;`,
       (error, rows) => {
         if (error || rows.length === 0) return resolve(0);
         const score = rows[0].score+1;

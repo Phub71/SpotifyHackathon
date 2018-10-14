@@ -25,7 +25,7 @@ function getSongPopularity(song) {
 }
 
 function filterSongs(songs) {
-  const maxSongs = 6;
+  const maxSongs = 18;
   if(songs.length <= maxSongs) return songs;
   let songsByPopulaity = songs.slice();
   songsByPopulaity.sort((a,b)=>getSongPopularity(b)-getSongPopularity(a));
