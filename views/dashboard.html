@@ -74,8 +74,8 @@
                     <i class="fa fa-pause controls--play-button"></i>
 
                     <div class="song-info">
-                        <div class="song-info--title">Is This Love</div>
-                        <div class="song-info--artist">Bob Marley</div>
+                        <div class="song-info--title">{{activeSongTitle | limitTo:12}}</div>
+                        <div class="song-info--artist">{{activeSongArtist | limitTo:12}}</div>
                     </div>
                     <div class="controls--actions">
                         <i class="fa fa-backward actions--back"></i>
@@ -85,15 +85,27 @@
             </main>
         </section>
         <aside class="note-wrap" ng-style="{'background': getBackground()}"
+
+    </md-toolbar>
+
+    <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
+
+    <md-content>
+        <md-list>
+            <md-list-item ng-repeat="item in newTracks" ng-click="postSong(item.id)">
+                <p>{{item.name}}</p>
+            </md-list-item>
+        </md-list>
+    </md-content>
+
+    <div class="wrapper1 clearfix">
+        <aside class="note-wrap" ng-style="item.style"
                ng-repeat="item in tracks">
             <div layout="row" layout-align="start center" flex>
 
                 <img class="user-image" ng-src="/public/svg/account.svg" ng-if="!item.user.images[0].url">
                 <img class="user-image" ng-src="{{item.user.images[0].url}}" ng-if="item.user.images[0].url">
                 <span class="user-name">{{item.user.display_name}}</span>
-
-                <img ng-src="https://media.giphy.com/media/vybWlRniCXzZC/giphy.gif" class="player-gif" ng-if="isTrackPlaying(item)">
-
             </div>
             <div class="content">
                 <img ng-src="{{item.track.album.images[0]['url']}}" class="album-image">
@@ -104,17 +116,17 @@
                 <div layout="row" layout-align="end center" flex>
 
                     <div layout="row" layout-align="end center">
-                        <md-button ng-click="happy(item)" aria-label="happy">
+                        <md-button ng-click="happy(item)" aria-label="happy" class="action-button">
                             <md-icon md-svg-icon="/public/svg/happy.svg">{{item.emotions.happy}}</md-icon>
                             <span>{{item.emotions.happy}}</span>
                         </md-button>
 
-                        <md-button ng-click="sad(item)" aria-label="sad">
+                        <md-button ng-click="sad(item)" aria-label="sad" class="action-button">
                             <md-icon md-svg-icon="/public/svg/sad.svg">{{item.emotions.happy}}</md-icon>
                             <span>{{item.emotions.sad}}</span>
                         </md-button>
 
-                        <md-button ng-click="playStop(item)" aria-label="playStop">
+                        <md-button ng-click="playStop(item)" aria-label="playStop" class="action-button">
                             <md-icon md-svg-icon="/public/svg/play.svg" ng-if="!isTrackPlaying(item)"></md-icon>
                             <md-icon md-svg-icon="/public/svg/pause.svg" ng-if="isTrackPlaying(item)"></md-icon>
                         </md-button>
@@ -136,3 +148,10 @@
 
 </div>
 </html>
+
+<div class="splasher">
+    <canvas class="splash-canvas"></canvas>
+    <div class="splash-list"></div>
+</div>
+<link rel="stylesheet" href="/public/background.css">
+<script type="module" src="/public/background.js"></script>
