@@ -34,7 +34,7 @@ angular.module('spotifyApp')
                     angular.forEach(res, function (value) {
                         const rotation = (random(value.track.id) - .5) * 20;
                         value['style'] = {
-                            'background': self.backgroundColors[Math.floor(rotation * self.backgroundColors.length)],
+                            'background': self.backgroundColors[Math.floor(random(value.track.album.id) * self.backgroundColors.length)],
                             'transform': 'rotate(' + rotation + 'deg)',
                         }
                     });
