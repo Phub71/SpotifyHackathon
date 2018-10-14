@@ -1,5 +1,5 @@
 import {get, post} from "./network.js";
-import {play, pause, isCurrentSong , audio_features} from "./player.js";
+import {play, pause, isCurrentSong, audio_features} from "./player.js";
 
 angular.module('spotifyApp')
     .controller('MainController', ['$timeout', '$scope',
@@ -8,6 +8,7 @@ angular.module('spotifyApp')
             self.backgroundColors = ["#19d06e70", "#c1d01970", "#d0191970", "#19d03c70", "#2910101c", "#ab0c0c66", "#0cab8e66", "#9cf3e366", "#ea9cf366"];
             $scope.activeSongTitle = "";
             $scope.activeSongArtist = "";
+            $scope.activeSongId = false;
 
             self.refresh = function () {
                 $scope.loading = true;
@@ -82,10 +83,12 @@ angular.module('spotifyApp')
             };
 
             $scope.playStop = function (item) {
-                if ($scope.isTrackPlaying(item)) {
-                    $scope.pause(item);
-                } else {
-                    $scope.play(item);
+                if (item) {
+                    if ($scope.isTrackPlaying(item)) {
+                        $scope.pause(item);
+                    } else {
+                        $scope.play(item);
+                    }
                 }
             };
 
@@ -93,6 +96,7 @@ angular.module('spotifyApp')
                 if (item && item.track) {
                     play(item.track.id);
                     $scope.activeSongTitle = item.track.name;
+                    $scope.activeSongId = item.track.id;
                     if (item.track.hasOwnProperty('artists') && angular.isArray(item.track.artists) && item.track.artists.length > 0) {
                         $scope.activeSongArtist = item.track.artists[0]['name'];
                     }
@@ -105,6 +109,7 @@ angular.module('spotifyApp')
                     pause(item.track.id);
                     $scope.activeSongTitle = "";
                     $scope.activeSongArtist = "";
+                    $scope.activeSongId = false;
                 }
             };
 

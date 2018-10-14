@@ -67,10 +67,10 @@ body { background: #EFEFEF; font-family: sans-serif}
     background: gray;
 }
 .song-info {
-    display:inline-block;
-    position:relative;
-    top:5px;
-    margin-left:5px
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    margin-left: 5px;
 }
 .song-info--title {
     font-size: 18px;
@@ -112,3 +112,9 @@ body { background: #EFEFEF; font-family: sans-serif}
 .controls--actions .fa-backward {
     padding: 5px 6px 5px 5px;
 }
+
+.player-button {
+    color: rgba(216, 16, 16, 0.87) !important;
+    fill: rgba(214, 21, 21, 0.87) !important;
+}
+
