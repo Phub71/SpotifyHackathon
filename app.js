@@ -26,6 +26,17 @@ app.use((req, resp, next) => {
 //------------- AUTHORIZATION === auth-app.js -----------------//
 //-------------------------------------------------------------//
 
+function handleError(fn) {
+  return async function (request, response) {
+    try {
+      await fn(request, response);
+    } catch (ex) {
+      console.error(ex);
+      response.end();
+    }
+  }
+}
+
 const auth_app = require('./server/auth-app');
 auth_app.init(app);
 
@@ -103,12 +114,11 @@ app.post('/createPlaylist', async function (request, response) {
   response.end();
 });
 
-app.get('/listSongs', async function (request, response) {
+app.get('/listSongs', handleError(async function (request, response) {
   const listSongs = await db.listSongs();
   const userIds = Array.from(new Set(listSongs.map(song => song.user_id)));
   const users = await Promise.all(userIds.map(async id => (await spotifyApi.getUser(id)).body));
-  const tracks = (await spotifyApi.getTracks(listSongs.map(song => song.track_id))).body.tracks;
-
+  const tracks = listSongs.length === 0 ? [] :(await spotifyApi.getTracks(listSongs.map(song => song.track_id))).body.tracks;
 
   const result = listSongs.map(({user_id, track_id, happy_emotion, sad_emotion}) => ({
     track: tracks.find(track => track.id === track_id),
@@ -120,14 +130,14 @@ app.get('/listSongs', async function (request, response) {
   }));
   response.send(result);
   response.end();
-});
+}));
 
-app.post('/search-track', async function (request, response) {
+app.post('/search-track', handleError(async function (request, response) {
   const {name} = request.body;
   const data = await spotifyApi.searchTracks('track:' + name, {limit: 5});
   response.send(data.body.tracks.items);
   response.end();
-});
+}));
 
 //-------------------------------------------------------------//
 //------------------------ WEB SERVER -------------------------//
