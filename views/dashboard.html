@@ -54,8 +54,8 @@
                     <i class="fa fa-pause controls--play-button"></i>
 
                     <div class="song-info">
-                        <div class="song-info--title">Is This Love</div>
-                        <div class="song-info--artist">Bob Marley</div>
+                        <div class="song-info--title">{{activeSongTitle | limitTo:12}}</div>
+                        <div class="song-info--artist">{{activeSongArtist | limitTo:12}}</div>
                     </div>
                     <div class="controls--actions">
                         <i class="fa fa-backward actions--back"></i>
