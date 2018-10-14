@@ -1,6 +1,8 @@
+import {getBrightness} from "./player.js";
+
 export function splash({
                          hue = Math.floor(Math.random() * 360),
-                         brightness = 50+Math.floor(Math.random() * 50)
+                         brightness = getBrightness()
                        } = {}) {
   const el = $(createSplash());
   const img = el.find('img');

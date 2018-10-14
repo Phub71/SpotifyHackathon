@@ -1,3 +1,4 @@
+import {splash} from "./background.js";
 import {get, post} from "./network.js";
 import {play, pause, isCurrentSong, audio_features} from "./player.js";
 
@@ -59,7 +60,8 @@ angular.module('spotifyApp')
             };
 
             $scope.findTracks = function () {
-                $scope.loading = true;
+              splash();
+              $scope.loading = true;
                 $scope.post('search-track', {name: $scope.newSong}).then(function (res) {
                     $scope.newTracks = res;
                     $scope.loading = false;
@@ -77,6 +79,7 @@ angular.module('spotifyApp')
             };
 
             $scope.happy = function (item) {
+              splash();
                 post('/reactHappy', {userId: item.user.id, trackId: item.track.id}).then(
                     function () {
                         self.refresh();
@@ -85,7 +88,8 @@ angular.module('spotifyApp')
             };
 
             $scope.sad = function (item) {
-                post('/reactSad', {userId: item.user.id, trackId: item.track.id}).then(
+              splash();
+              post('/reactSad', {userId: item.user.id, trackId: item.track.id}).then(
                     function () {
                         self.refresh();
                     }
@@ -97,7 +101,8 @@ angular.module('spotifyApp')
             };
 
             $scope.playStop = function (item) {
-                if (item) {
+              splash();
+              if (item) {
                     if ($scope.isTrackPlaying(item)) {
                         $scope.pause(item);
                     } else {
@@ -107,7 +112,8 @@ angular.module('spotifyApp')
             };
 
             $scope.play = function (item) {
-                if (item && item.track) {
+              splash();
+              if (item && item.track) {
                     play(item.track.id);
                     $scope.activeSongTitle = item.track.name;
                     $scope.activeSongId = item.track.id;
@@ -119,7 +125,8 @@ angular.module('spotifyApp')
             };
 
             $scope.pause = function (item) {
-                if (item && item.track) {
+              splash();
+              if (item && item.track) {
                     pause(item.track.id);
                     $scope.activeSongTitle = "";
                     $scope.activeSongArtist = "";

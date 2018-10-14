@@ -7,6 +7,7 @@ const {access_token, user_id} = document.cookie.split(';').reduce((acc, token) =
 
 let deviceId;
 let currentState;
+let curentAnalysis;
 
 window.onSpotifyPlayerAPIReady = () => {
     const player = new Spotify.Player({
@@ -26,6 +27,7 @@ window.onSpotifyPlayerAPIReady = () => {
       currentState = state;
         post('/track-analysis',{trackId: getCurrentTrackId()}).then(analysis=>{
             console.log(analysis);
+          curentAnalysis = analysis;
         });
         $('#current-track').attr('src', state.track_window.current_track.album.images[0].url);
         $('#current-track-name').text(state.track_window.current_track.name);
@@ -70,6 +72,13 @@ function getCurrentTrackId() {
         if(track.linked_from.id) return track.linked_from.id;
         return track.id;
     };
+}
+
+export function getBrightness() {
+    if(curentAnalysis) {
+        return (currentState.energy + currentState.danceability + currentState.valence) / 3;
+    }
+    return .5;
 }
 
 export function isCurrentSong(id) {
