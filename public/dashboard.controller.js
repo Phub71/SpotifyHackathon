@@ -129,7 +129,6 @@ angular.module('spotifyApp')
             };
 
             $scope.playStop = function (item) {
-                splash();
                 if (item) {
                     if ($scope.isTrackPlaying(item)) {
                         $scope.pause(item);
@@ -148,7 +147,6 @@ angular.module('spotifyApp')
             };
 
             $scope.play = function (item) {
-                splash();
                 if (item && item.track) {
                     $scope.lastActiveTrack = item;
                     $scope.isPlaying = true;
@@ -158,7 +156,6 @@ angular.module('spotifyApp')
             };
 
             $scope.pause = function (item) {
-                splash();
                 if (item && item.track) {
                     $scope.isPlaying = false;
                     pause(item.track.id);

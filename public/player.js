@@ -1,4 +1,5 @@
 import {post} from './network.js';
+import {splash} from "./background.js";
 const {access_token, user_id} = document.cookie.split(';').reduce((acc, token) => {
     const [key, value] = token.split('=');
     acc[key.trim()] = value.trim();
@@ -28,6 +29,7 @@ window.onSpotifyPlayerAPIReady = () => {
         post('/track-analysis',{trackId: getCurrentTrackId()}).then(analysis=>{
             console.log(analysis);
           curentAnalysis = analysis;
+          splash();
         });
         $('#current-track').attr('src', state.track_window.current_track.album.images[0].url);
         $('#current-track-name').text(state.track_window.current_track.name);
