@@ -104,7 +104,8 @@ app.post('/createPlaylist', async function (request, response) {
     clientSecret: process.env.CLIENT_SECRET
   });
   spotifyApi.setAccessToken(access_token);
-  const playlist = (await spotifyApi.createPlaylist(user_id, "Hacked!")).body;
+  const date = new Date();
+  const playlist = (await spotifyApi.createPlaylist(user_id, "Splashify " + date.getUTCDate())).body;
 
   const songs = await db.listSongs();
   const trackIds = songs.map(song => "spotify:track:" + song.track_id);
