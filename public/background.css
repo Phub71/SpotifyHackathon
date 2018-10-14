@@ -1,3 +1,7 @@
+body, .dashboard {
+    background: none!important;
+}
+
 .splash-container {
     position: absolute;
     top: 0;
