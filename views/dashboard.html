@@ -81,19 +81,11 @@
                 </div>
             </main>
         </section>
-        <aside class="note-wrap" ng-style="{'background': getBackground()}"
+        <aside class="" ng-style="{'background': getBackground()}"
 
     </md-toolbar>
 
     <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
-
-    <md-content>
-        <md-list>
-            <md-list-item ng-repeat="item in newTracks" ng-click="postSong(item.id)">
-                <p>{{item.name}}</p>
-            </md-list-item>
-        </md-list>
-    </md-content>
 
     <div class="wrapper1 clearfix">
         <aside class="note-wrap" ng-style="item.style"
