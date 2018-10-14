@@ -18,9 +18,21 @@ function listSongs() {
   });
 }
 
-function addSong(userId, trackId) {
+function getLeastPopularSongHappiness() {
   return new Promise((resolve, reject) => {
-    db.run(`INSERT INTO songs (user_id, track_id) VALUES (?, ?);`, userId, trackId,
+    db.all(`SELECT happy_emotion - sad_emotion as score FROM songs ORDER BY score DESC LIMIT 1 OFFSET 5;`,
+      (error, rows) => {
+        if (error || rows.length === 0) return resolve(0);
+        const score = rows[0].score+1;
+        resolve(score);
+      });
+  });
+}
+
+function addSong(userId, trackId) {
+  return new Promise(async (resolve, reject) => {
+    const score = await getLeastPopularSongHappiness();
+    db.run(`INSERT INTO songs (user_id, track_id, happy_emotion) VALUES (?, ?, ?);`, userId, trackId, score,
       (error) => {
         if (error) reject(error);
         resolve();

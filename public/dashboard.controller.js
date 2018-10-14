@@ -20,6 +20,34 @@ function random(seed) {
     return x - Math.floor(x);
 }
 
+function getSongPopularity(song) {
+  return song.emotions.happy - song.emotions.sad;
+}
+
+function filterSongs(songs) {
+  const maxSongs = 6;
+  if(songs.length <= maxSongs) return songs;
+  let songsByPopulaity = songs.slice();
+  songsByPopulaity.sort((a,b)=>getSongPopularity(b)-getSongPopularity(a));
+  songsByPopulaity = songsByPopulaity.slice(0, maxSongs);
+
+  for(let i = 0; i < maxSongs; i++) {
+    const song = songs[i];
+    const isPopular = songsByPopulaity.indexOf(song) !== -1;
+    if(isPopular) continue;
+
+    for(let j = maxSongs; j < songs.length; j++) {
+      const newSong = songs[j];
+      const isPopular = songsByPopulaity.indexOf(newSong) !== -1;
+      if(!isPopular) continue;
+      songs[i] = newSong;
+      songs[j] = song;
+      break;
+    }
+  }
+  return songs.slice(0,maxSongs);
+}
+
 angular.module('spotifyApp')
     .controller('MainController', ['$timeout', '$scope',
         function ($timeout, $scope) {
@@ -31,6 +59,7 @@ angular.module('spotifyApp')
             self.refresh = function () {
                 $scope.loading = true;
                 $scope.get('/listSongs').then(function (res) {
+                    res = filterSongs(res);
                     angular.forEach(res, function (value) {
                         const rotation = (random(value.track.id) - .5) * 20;
                         value['style'] = {
