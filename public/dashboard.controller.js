@@ -153,7 +153,7 @@ angular.module('spotifyApp')
 
             $scope.play = function (item) {
                 if (item && item.track) {
-                    for (let i = 0; i < 5; i++) splash();
+                    for (let i = 0; i < 5; i++) splash(item.track);
                     $scope.lastActiveTrack = item;
                     $scope.isPlaying = true;
                     play(item.track.id);
